@@ -1,0 +1,6 @@
+{
+  "sonarlint.rules": {
+    "typescript:S6747": { "level": "off" },
+    "S6747": { "level": "off" }
+  }
+}

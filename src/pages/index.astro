@@ -1,0 +1,661 @@
+---
+import '../styles/global.css';
+import { HeroExperience } from '../hero-experience';
+import { LandingEffects } from '../landing-effects';
+import { SectionExperience } from '../section-experience';
+
+const translations = {
+	en: {
+		lang: 'en',
+		title: 'NEXA Systems | AI Automation Studio',
+		metaDescription:
+			'NEXA is an AI systems studio that designs, automates, and operates custom solutions for modern companies. Lead gen, sales automation, and AI products.',
+		integrations: ['n8n', 'HubSpot', 'OpenAI', 'Supabase', 'Resend', 'Cal.com'],
+		nav: {
+			solutions: 'Solutions',
+			useCases: 'Use Cases',
+			engagements: 'Engagements',
+			bookCall: 'Book strategy call'
+		},
+		hero: {
+			eyebrow: 'AI Systems Studio',
+			title: 'We build AI automations, agents, and products that solve real business problems.',
+			text:
+				'From lead generation and outreach to operations and internal tools, NEXA designs and implements AI systems operated by experts.',
+			primaryCta: 'Book a strategy call',
+			secondaryCta: 'See solutions',
+			proof: [
+				{ value: 'Lead gen', label: 'systems' },
+				{ value: 'Sales & ops', label: 'automation' },
+				{ value: 'Custom AI', label: 'products' }
+			]
+		},
+		logoStrip: 'Connected stack',
+		platform: {
+			kicker: 'What we build',
+			title: 'AI systems and automation for companies that need real execution.',
+			text:
+				'We design, implement, and operate solutions that automate growth, sales, and operations. No generic platform—custom systems built by experts.',
+			pillars: [
+				{
+					title: 'AI Lead Engine',
+					description:
+						'Systems that find, qualify, and prioritize prospects automatically. From sourcing to scoring to handoff.'
+				},
+				{
+					title: 'AI Sales Automation',
+					description:
+						'Automate outreach, follow-up, scoring, and commercial handoff. Personalized at scale.'
+				},
+				{
+					title: 'AI Internal Operations',
+					description:
+						'Automate internal tasks, support, reports, backoffice, and repetitive processes.'
+				},
+				{
+					title: 'Custom AI Products',
+					description:
+						'Design and build internal tools, dashboards, agents, or SaaS products powered by AI.'
+				}
+			]
+		},
+		story: {
+			cards: [
+				{
+					tag: 'Live orchestration',
+					title: 'From signal to outcome in a single operating flow.',
+					text:
+						'Discovery, qualification, execution. We combine events, AI reasoning, and multi-step actions into systems that keep moving.',
+					nodes: ['Signal', 'AI decision', 'Routing', 'Result']
+				},
+				{
+					tag: 'AI insights',
+					title: 'Understand what your business needs right now.',
+					signals: [
+						'High-value prospect detected',
+						'Pipeline bottleneck identified',
+						'Automation opportunity flagged'
+					]
+				},
+				{
+					tag: 'Agents',
+					title: 'Task-specific AI workers across sales, ops, and support.',
+					agents: ['Lead Agent', 'Support Agent', 'Ops Agent']
+				}
+			]
+		},
+		how: {
+			kicker: 'How we work',
+			title: 'Audit. Design. Deploy.',
+			steps: [
+				{
+					index: '01',
+					title: 'Audit',
+					description: 'We analyze your current operations and identify automation opportunities.'
+				},
+				{
+					index: '02',
+					title: 'Design',
+					description: 'We define the architecture, workflows, tools, and AI logic.'
+				},
+				{
+					index: '03',
+					title: 'Deploy',
+					description: 'We implement, test, and operate the system with your team.'
+				}
+			]
+		},
+		useCases: {
+			kicker: 'Industries we serve',
+			title: 'Built for companies that need real execution.',
+			cards: [
+				{
+					tag: 'Real estate',
+					title: 'Lead capture, qualification, and automated follow-up for agencies and developers.'
+				},
+				{
+					tag: 'Agencies & B2B',
+					title: 'Lead generation, sales automation, and pipeline enrichment for growth teams.'
+				},
+				{
+					tag: 'Operations',
+					title: 'Support routing, backoffice automation, and internal tools for scaling teams.'
+				}
+			],
+			listTag: 'Also for',
+			list: [
+				'Dealerships',
+				'Clinics & healthcare',
+				'E-commerce operations',
+				'Support teams',
+				'Marketing agencies',
+				'SaaS sales teams'
+			]
+		},
+		pricing: {
+			kicker: 'Engagements',
+			title: 'Custom solutions, not one-size-fits-all.',
+			period: '',
+			cta: 'Book strategy call',
+			plans: [
+				{
+					name: 'Starter',
+					price: 'Audit + Roadmap',
+					description: 'AI audit of your processes and a proposal with quick wins and implementation plan.',
+					features: ['Process analysis', 'Automation roadmap', 'Quick wins identified']
+				},
+				{
+					name: 'Growth',
+					price: 'Lead gen or Sales',
+					description: 'Setup of lead generation or sales automation system, operated by our team.',
+					features: ['Full system design', 'Implementation', 'Ongoing operation']
+				},
+				{
+					name: 'Custom',
+					price: 'Full implementation',
+					description: 'Complete AI systems implementation for growth, sales, and operations.',
+					features: ['End-to-end build', 'Custom integrations', 'Dedicated operation']
+				}
+			]
+		},
+		final: {
+			kicker: 'Ready to automate',
+			title: 'AI systems and automation for companies that need real execution.',
+			text:
+				'From AI workflows to full products, built and operated by experts. Book a strategy call or request an audit.',
+			primary: 'Book strategy call',
+			secondary: 'Request audit'
+		},
+		footer: {
+			text: 'AI systems and automation for companies that need real execution.'
+		}
+	},
+	es: {
+		lang: 'es',
+		title: 'NEXA Systems | Estudio de Automatización con IA',
+		metaDescription:
+			'NEXA es un estudio de sistemas con IA que diseña, automatiza y opera soluciones a medida para empresas modernas. Lead gen, automatización comercial y productos IA.',
+		integrations: ['n8n', 'HubSpot', 'OpenAI', 'Supabase', 'Resend', 'Cal.com'],
+		nav: {
+			solutions: 'Soluciones',
+			useCases: 'Casos de uso',
+			engagements: 'Engagements',
+			bookCall: 'Reservar llamada'
+		},
+		hero: {
+			eyebrow: 'Estudio de Sistemas IA',
+			title: 'Diseñamos e implementamos sistemas con IA que resuelven problemas reales de negocio.',
+			text:
+				'Desde captación de leads y outreach hasta operaciones y herramientas internas, NEXA diseña e implementa sistemas con IA operados por expertos.',
+			primaryCta: 'Reservar llamada estratégica',
+			secondaryCta: 'Ver soluciones',
+			proof: [
+				{ value: 'Lead gen', label: 'systems' },
+				{ value: 'Sales & ops', label: 'automation' },
+				{ value: 'Custom AI', label: 'products' }
+			]
+		},
+		logoStrip: 'Stack conectado',
+		platform: {
+			kicker: 'Qué construimos',
+			title: 'Sistemas con IA y automatización para empresas que necesitan ejecución real.',
+			text:
+				'Diseñamos, implementamos y operamos soluciones que automatizan crecimiento, ventas y operaciones. Sin plataforma genérica: sistemas a medida construidos por expertos.',
+			pillars: [
+				{
+					title: 'AI Lead Engine',
+					description:
+						'Sistemas que encuentran, califican y priorizan prospectos automáticamente. De sourcing a scoring a handoff.'
+				},
+				{
+					title: 'Automatización comercial IA',
+					description:
+						'Automatiza outreach, seguimiento, scoring y handoff comercial. Personalización a escala.'
+				},
+				{
+					title: 'Operaciones internas IA',
+					description:
+						'Automatiza tareas internas, soporte, reportes, backoffice y procesos repetitivos.'
+				},
+				{
+					title: 'Productos IA a medida',
+					description:
+						'Diseño y desarrollo de herramientas internas, dashboards, agentes o productos SaaS con IA.'
+				}
+			]
+		},
+		story: {
+			cards: [
+				{
+					tag: 'Orquestación en vivo',
+					title: 'De la señal al resultado en un único flujo operativo.',
+					text:
+						'Discovery, calificación, ejecución. Combinamos eventos, razonamiento IA y acciones multi-paso en sistemas que siguen funcionando.',
+					nodes: ['Señal', 'Decisión IA', 'Enrutamiento', 'Resultado']
+				},
+				{
+					tag: 'Insights IA',
+					title: 'Entiende qué necesita tu negocio ahora mismo.',
+					signals: [
+						'Prospecto de alto valor detectado',
+						'Cuello de botella en pipeline identificado',
+						'Oportunidad de automatización señalada'
+					]
+				},
+				{
+					tag: 'Agentes',
+					title: 'Trabajadores IA especializados en ventas, operaciones y soporte.',
+					agents: ['Agente de leads', 'Agente de soporte', 'Agente de operaciones']
+				}
+			]
+		},
+		how: {
+			kicker: 'Cómo trabajamos',
+			title: 'Auditoría. Diseño. Despliegue.',
+			steps: [
+				{
+					index: '01',
+					title: 'Auditoría',
+					description: 'Analizamos tus operaciones actuales e identificamos oportunidades de automatización.'
+				},
+				{
+					index: '02',
+					title: 'Diseño',
+					description: 'Definimos la arquitectura, workflows, herramientas y lógica de IA.'
+				},
+				{
+					index: '03',
+					title: 'Despliegue',
+					description: 'Implementamos, probamos y operamos el sistema con tu equipo.'
+				}
+			]
+		},
+		useCases: {
+			kicker: 'Industrias que servimos',
+			title: 'Construido para empresas que necesitan ejecución real.',
+			cards: [
+				{
+					tag: 'Inmobiliarias',
+					title: 'Captación de leads, calificación y seguimiento automatizado para agencias y promotores.'
+				},
+				{
+					tag: 'Agencias y B2B',
+					title: 'Generación de leads, automatización comercial y enriquecimiento de pipeline para equipos de crecimiento.'
+				},
+				{
+					tag: 'Operaciones',
+					title: 'Enrutamiento de soporte, automatización de backoffice y herramientas internas para equipos en crecimiento.'
+				}
+			],
+			listTag: 'También para',
+			list: [
+				'Concesionarios',
+				'Clínicas y salud',
+				'Operaciones e-commerce',
+				'Equipos de soporte',
+				'Agencias de marketing',
+				'Equipos comerciales SaaS'
+			]
+		},
+		pricing: {
+			kicker: 'Engagements',
+			title: 'Soluciones a medida, no talla única.',
+			period: '',
+			cta: 'Reservar llamada',
+			plans: [
+				{
+					name: 'Starter',
+					price: 'Auditoría + Roadmap',
+					description: 'Auditoría IA de tus procesos y propuesta con quick wins y plan de implementación.',
+					features: ['Análisis de procesos', 'Roadmap de automatización', 'Quick wins identificados']
+				},
+				{
+					name: 'Growth',
+					price: 'Lead gen o Sales',
+					description: 'Configuración de sistema de lead gen o automatización comercial, operado por nuestro equipo.',
+					features: ['Diseño completo', 'Implementación', 'Operación continua']
+				},
+				{
+					name: 'Custom',
+					price: 'Implementación completa',
+					description: 'Implementación completa de sistemas IA para crecimiento, ventas y operaciones.',
+					features: ['Build end-to-end', 'Integraciones custom', 'Operación dedicada']
+				}
+			]
+		},
+		final: {
+			kicker: 'Listo para automatizar',
+			title: 'Sistemas con IA y automatización para empresas que necesitan ejecución real.',
+			text:
+				'De workflows IA a productos completos, construidos y operados por expertos. Reserva una llamada estratégica o solicita una auditoría.',
+			primary: 'Reservar llamada',
+			secondary: 'Solicitar auditoría'
+		},
+		footer: {
+			text: 'Sistemas con IA y automatización para empresas que necesitan ejecución real.'
+		}
+	}
+} as const;
+
+const copy = translations.en;
+const translationsJson = JSON.stringify(translations);
+---
+
+<html lang={copy.lang}>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={copy.metaDescription} />
+		<title>{copy.title}</title>
+		{import.meta.env.DEV ? (
+			<script is:inline>
+				const originalWarn = console.warn.bind(console);
+				console.warn = (...args) => {
+					const first = typeof args[0] === 'string' ? args[0] : '';
+					if (first.includes('THREE.THREE.Clock: This module has been deprecated')) return;
+					if (first.includes('not eligible for reset')) return;
+					originalWarn(...args);
+				};
+			</script>
+		) : null}
+	</head>
+	<body>
+		<div class="site-shell">
+			<div class="ambient ambient-left"></div>
+			<div class="ambient ambient-right"></div>
+			<div class="grid-overlay"></div>
+			<svg class="section-connections" viewBox="0 0 1000 2200" preserveAspectRatio="none" aria-hidden="true">
+				<path class="section-connector-path" d="M640 240 C840 360, 220 520, 520 700" />
+				<path class="section-connector-path" d="M520 700 C760 900, 360 1080, 620 1280" />
+				<path class="section-connector-path" d="M620 1280 C860 1460, 260 1640, 560 1840" />
+			</svg>
+			<header class="topbar">
+				<a class="brand" href="#hero">
+					<span class="brand-mark">N</span>
+					<span>NEXA</span>
+				</a>
+				<nav class="nav">
+					<a href="#platform" data-i18n="nav.solutions">{copy.nav.solutions}</a>
+					<a href="#use-cases" data-i18n="nav.useCases">{copy.nav.useCases}</a>
+					<a href="#pricing" data-i18n="nav.engagements">{copy.nav.engagements}</a>
+				</nav>
+				<div class="topbar-actions">
+					<div class="lang-switch" aria-label="Language switch">
+						<button class="lang-button is-active" data-lang-toggle="en" type="button">EN</button>
+						<button class="lang-button" data-lang-toggle="es" type="button">ES</button>
+					</div>
+					<a class="ghost-link" href="#pricing" data-i18n="nav.engagements">{copy.nav.engagements}</a>
+					<a class="button button-primary button-sm" href="mailto:hello@nexa.app?subject=Strategy%20call" data-i18n="nav.bookCall">
+						{copy.nav.bookCall}
+					</a>
+				</div>
+			</header>
+
+			<main>
+				<section class="hero" id="hero" data-flow-section="hero">
+					<div class="hero-copy" data-reveal>
+						<div class="eyebrow" data-hero-eyebrow>
+							<span class="status-dot"></span>
+							<span data-i18n="hero.eyebrow">{copy.hero.eyebrow}</span>
+						</div>
+						<h1 data-hero-title data-i18n="hero.title">{copy.hero.title}</h1>
+						<p class="hero-text" data-hero-text data-i18n="hero.text">{copy.hero.text}</p>
+						<div class="hero-actions" data-hero-actions>
+							<a class="button button-primary" href="mailto:hello@nexa.app?subject=Strategy%20call" data-i18n="hero.primaryCta">
+								{copy.hero.primaryCta}
+							</a>
+							<a class="button button-secondary" href="#platform" data-i18n="hero.secondaryCta">
+								{copy.hero.secondaryCta}
+							</a>
+						</div>
+						<div class="hero-proof" data-hero-proof>
+							{copy.hero.proof.map((item, index) => (
+								<div>
+									<strong>{item.value}</strong>
+									<span data-i18n={`hero.proof.${index}.label`}>{item.label}</span>
+								</div>
+							))}
+						</div>
+					</div>
+
+					<HeroExperience integrations={copy.integrations} client:media="(min-width: 960px)" />
+				</section>
+
+				<section class="logo-strip" data-reveal>
+					<p class="logo-strip-label" data-i18n="logoStrip">{copy.logoStrip}</p>
+					<div class="logo-row">
+						{copy.integrations.map((integration) => <span>{integration}</span>)}
+					</div>
+				</section>
+
+				<section class="platform" id="platform" data-flow-section="platform">
+					<SectionExperience variant="platform" client:media="(min-width: 960px)" />
+					<div class="section-heading" data-reveal>
+						<span class="section-kicker" data-i18n="platform.kicker">{copy.platform.kicker}</span>
+						<h2 data-i18n="platform.title">{copy.platform.title}</h2>
+						<p data-i18n="platform.text">{copy.platform.text}</p>
+					</div>
+
+					<div class="feature-grid feature-grid-four">
+						{copy.platform.pillars.map((pillar, index) => (
+							<article class="feature-card glass-card" data-reveal>
+								<div class="feature-icon"></div>
+								<h3 data-i18n={`platform.pillars.${index}.title`}>{pillar.title}</h3>
+								<p data-i18n={`platform.pillars.${index}.description`}>{pillar.description}</p>
+								{index === 0 ? (
+									<div class="live-metric">
+										<span>Lead scoring accuracy</span>
+										<strong data-live-counter="91">91%</strong>
+									</div>
+								) : null}
+								{index === 1 ? (
+									<div class="live-bars" aria-hidden="true">
+										<span></span>
+										<span></span>
+										<span></span>
+										<span></span>
+									</div>
+								) : null}
+							</article>
+						))}
+					</div>
+				</section>
+
+				<section class="story-stage" data-flow-section="workflow">
+					<SectionExperience variant="story" client:visible />
+					<div class="story-grid">
+						<article class="story-card story-large glass-card" data-reveal>
+							<div class="card-tag" data-i18n="story.cards.0.tag">{copy.story.cards[0].tag}</div>
+							<h3 data-i18n="story.cards.0.title">{copy.story.cards[0].title}</h3>
+							<p data-i18n="story.cards.0.text">{copy.story.cards[0].text}</p>
+							<div class="story-flow">
+								{copy.story.cards[0].nodes.map((node, index) => (
+									<div class:list={['story-node', index === 1 && 'active', index === 3 && 'success']} data-i18n={`story.cards.0.nodes.${index}`}>
+										{node}
+									</div>
+								))}
+							</div>
+						</article>
+
+						<article class="story-card glass-card" data-reveal>
+							<div class="card-tag" data-i18n="story.cards.1.tag">{copy.story.cards[1].tag}</div>
+							<h3 data-i18n="story.cards.1.title">{copy.story.cards[1].title}</h3>
+							<div class="insight-lines">
+								<span></span>
+								<span></span>
+								<span></span>
+								<span></span>
+							</div>
+							<ul class="signal-list">
+								{copy.story.cards[1].signals.map((signal, index) => (
+									<li data-i18n={`story.cards.1.signals.${index}`}>{signal}</li>
+								))}
+							</ul>
+						</article>
+
+						<article class="story-card glass-card" data-reveal>
+							<div class="card-tag" data-i18n="story.cards.2.tag">{copy.story.cards[2].tag}</div>
+							<h3 data-i18n="story.cards.2.title">{copy.story.cards[2].title}</h3>
+							<div class="agent-stack">
+								{copy.story.cards[2].agents.map((agent, index) => (
+									<span data-i18n={`story.cards.2.agents.${index}`}>{agent}</span>
+								))}
+							</div>
+						</article>
+					</div>
+				</section>
+
+				<section class="how-it-works">
+					<div class="section-heading" data-reveal>
+						<span class="section-kicker" data-i18n="how.kicker">{copy.how.kicker}</span>
+						<h2 data-i18n="how.title">{copy.how.title}</h2>
+					</div>
+					<div class="steps">
+						{copy.how.steps.map((step, index) => (
+							<article class="step-card glass-card" data-reveal>
+								<span class="step-index">{step.index}</span>
+								<h3 data-i18n={`how.steps.${index}.title`}>{step.title}</h3>
+								<p data-i18n={`how.steps.${index}.description`}>{step.description}</p>
+							</article>
+						))}
+					</div>
+				</section>
+
+				<section class="use-cases" id="use-cases" data-flow-section="use-cases">
+					<div class="section-heading" data-reveal>
+						<span class="section-kicker" data-i18n="useCases.kicker">{copy.useCases.kicker}</span>
+						<h2 data-i18n="useCases.title">{copy.useCases.title}</h2>
+					</div>
+					<div class="bento-grid">
+						<article class="bento-card bento-feature glass-card" data-reveal>
+							<div class="card-tag" data-i18n="useCases.cards.0.tag">{copy.useCases.cards[0].tag}</div>
+							<h3 data-i18n="useCases.cards.0.title">{copy.useCases.cards[0].title}</h3>
+						</article>
+						<article class="bento-card glass-card" data-reveal>
+							<div class="card-tag" data-i18n="useCases.cards.1.tag">{copy.useCases.cards[1].tag}</div>
+							<h3 data-i18n="useCases.cards.1.title">{copy.useCases.cards[1].title}</h3>
+						</article>
+						<article class="bento-card glass-card" data-reveal>
+							<div class="card-tag" data-i18n="useCases.cards.2.tag">{copy.useCases.cards[2].tag}</div>
+							<h3 data-i18n="useCases.cards.2.title">{copy.useCases.cards[2].title}</h3>
+						</article>
+						<article class="bento-card bento-list glass-card" data-reveal>
+							<div class="card-tag" data-i18n="useCases.listTag">{copy.useCases.listTag}</div>
+							<ul>
+								{copy.useCases.list.map((useCase, index) => (
+									<li data-i18n={`useCases.list.${index}`}>{useCase}</li>
+								))}
+							</ul>
+						</article>
+					</div>
+				</section>
+
+				<section class="pricing" id="pricing" data-flow-section="pricing">
+					<div class="section-heading" data-reveal>
+						<span class="section-kicker" data-i18n="pricing.kicker">{copy.pricing.kicker}</span>
+						<h2 data-i18n="pricing.title">{copy.pricing.title}</h2>
+					</div>
+					<div class="pricing-grid">
+						{copy.pricing.plans.map((plan, index) => (
+							<article class:list={['pricing-card', 'glass-card', index === 1 && 'featured']} data-reveal>
+								<div class="pricing-head">
+									<div>
+										<span class="card-tag" data-i18n={`pricing.plans.${index}.name`}>{plan.name}</span>
+										<h3 class="pricing-title" data-i18n={`pricing.plans.${index}.price`}>{plan.price}</h3>
+									</div>
+								</div>
+								<p data-i18n={`pricing.plans.${index}.description`}>{plan.description}</p>
+								<ul>
+									{plan.features.map((feature, featureIndex) => (
+										<li data-i18n={`pricing.plans.${index}.features.${featureIndex}`}>{feature}</li>
+									))}
+								</ul>
+								<a class:list={['button', index === 1 ? 'button-primary' : 'button-secondary']} href="mailto:hello@nexa.app?subject=Strategy%20call" data-i18n="pricing.cta">
+									{copy.pricing.cta}
+								</a>
+							</article>
+						))}
+					</div>
+				</section>
+
+				<section class="final-cta glass-card" id="final-cta" data-reveal data-flow-section="final">
+					<SectionExperience variant="cta" client:visible />
+					<div>
+						<span class="section-kicker" data-i18n="final.kicker">{copy.final.kicker}</span>
+						<h2 data-i18n="final.title">{copy.final.title}</h2>
+						<p data-i18n="final.text">{copy.final.text}</p>
+					</div>
+					<div class="hero-actions">
+						<a class="button button-primary" href="mailto:hello@nexa.app?subject=Strategy%20call" data-i18n="final.primary">
+							{copy.final.primary}
+						</a>
+						<a class="button button-secondary" href="mailto:hello@nexa.app?subject=AI%20Audit%20request" data-i18n="final.secondary">
+							{copy.final.secondary}
+						</a>
+					</div>
+				</section>
+			</main>
+
+			<footer class="footer">
+				<a class="brand" href="#hero">
+					<span class="brand-mark">N</span>
+					<span>NEXA</span>
+				</a>
+				<p data-i18n="footer.text">{copy.footer.text}</p>
+			</footer>
+		</div>
+		<script is:inline define:vars={{ translationsJson }}>
+			const translations = JSON.parse(translationsJson);
+			const titleElement = document.querySelector('title');
+			const descriptionElement = document.querySelector('meta[name="description"]');
+			const buttons = Array.from(document.querySelectorAll('[data-lang-toggle]'));
+
+			const getValue = (source, path) =>
+				path.split('.').reduce((value, key) => {
+					if (value === undefined || value === null) return undefined;
+					if (/^\d+$/.test(key)) return value[Number(key)];
+					return value[key];
+				}, source);
+
+			const applyLanguage = (lang) => {
+				const copy = translations[lang] ?? translations.en;
+
+				document.documentElement.lang = copy.lang;
+				if (titleElement) titleElement.textContent = copy.title;
+				if (descriptionElement) descriptionElement.setAttribute('content', copy.metaDescription);
+
+				document.querySelectorAll('[data-i18n]').forEach((element) => {
+					const path = element.getAttribute('data-i18n');
+					if (!path) return;
+					const value = getValue(copy, path);
+					if (typeof value === 'string') element.textContent = value;
+				});
+
+				buttons.forEach((button) => {
+					const isActive = button.getAttribute('data-lang-toggle') === lang;
+					button.classList.toggle('is-active', isActive);
+					button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+				});
+
+				localStorage.setItem('nexa-lang', lang);
+			};
+
+			const savedLanguage = localStorage.getItem('nexa-lang');
+			const browserLanguage = navigator.language.toLowerCase().startsWith('es') ? 'es' : 'en';
+			const initialLanguage = savedLanguage === 'es' || savedLanguage === 'en' ? savedLanguage : browserLanguage;
+
+			applyLanguage(initialLanguage);
+
+			buttons.forEach((button) => {
+				button.addEventListener('click', () => {
+					const lang = button.getAttribute('data-lang-toggle');
+					if (lang === 'en' || lang === 'es') applyLanguage(lang);
+				});
+			});
+		</script>
+		<LandingEffects client:idle />
+	</body>
+</html>
