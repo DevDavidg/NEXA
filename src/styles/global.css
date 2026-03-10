@@ -1,22 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  --background: #020617;
-  --surface: rgba(15, 23, 42, 0.72);
-  --surface-strong: rgba(15, 23, 42, 0.92);
-  --surface-soft: rgba(15, 23, 42, 0.54);
-  --border: rgba(148, 163, 184, 0.18);
-  --text: #f8fafc;
-  --muted: #94a3b8;
-  --primary: #2563eb;
-  --secondary: #7c3aed;
-  --accent: #22c55e;
-  --shadow: 0 24px 80px rgba(2, 6, 23, 0.48);
-  --radius: 28px;
-  --pointer-x: 0.5;
-  --pointer-y: 0.3;
-  --container: 1200px;
-  --scroll-progress: 0;
+	--background: #020617;
+	--surface: rgba(15, 23, 42, 0.72);
+	--surface-strong: rgba(15, 23, 42, 0.92);
+	--surface-soft: rgba(15, 23, 42, 0.54);
+	--border: rgba(148, 163, 184, 0.18);
+	--text: #f8fafc;
+	--muted: #94a3b8;
+	--primary: #2563eb;
+	--secondary: #7c3aed;
+	--accent: #22c55e;
+	--shadow: 0 24px 80px rgba(2, 6, 23, 0.48);
+	--radius: 28px;
+	--pointer-x: 0.5;
+	--pointer-y: 0.3;
+	--container: 1200px;
+	--container-padding: 1rem;
+	--scroll-progress: 0;
 }
 
 * {
@@ -135,8 +136,8 @@ main,
 }
 
 .topbar {
-  width: min(calc(100% - 2rem), var(--container));
-  margin: 0 auto;
+	width: min(calc(100% - var(--container-padding) * 2), var(--container));
+	margin: 0 auto;
   padding: 1.25rem 0;
   display: flex;
   align-items: center;
@@ -278,9 +279,9 @@ main,
 }
 
 main {
-  width: min(calc(100% - 2rem), var(--container));
-  margin: 0 auto;
-  padding-bottom: 6rem;
+	width: min(calc(100% - var(--container-padding) * 2), var(--container));
+	margin: 0 auto;
+	padding-bottom: 6rem;
 }
 
 .hero,
@@ -1483,15 +1484,15 @@ h1 {
 }
 
 .final-cta {
-  position: relative;
-  overflow: hidden;
-  margin-top: 4.5rem;
-  padding: 2rem;
-  border-radius: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
+	position: relative;
+	overflow: hidden;
+	margin-top: 4.5rem;
+	padding: 2rem;
+	border-radius: 2rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1.5rem;
 }
 
 .section-connections {
@@ -1518,13 +1519,13 @@ h1 {
 }
 
 .footer {
-  width: min(calc(100% - 2rem), var(--container));
-  margin-inline: auto;
-  padding: 0 0 4rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+	width: min(calc(100% - var(--container-padding) * 2), var(--container));
+	margin-inline: auto;
+	padding: 0 0 4rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
 }
 
 [data-reveal] {
@@ -1662,251 +1663,372 @@ h1 {
 }
 
 @media (max-width: 1080px) {
-  .topbar {
-    position: relative;
-    flex-wrap: wrap;
-    align-items: flex-start;
-  }
+	:root {
+		--container-padding: 1.25rem;
+	}
 
-  .nav {
-    display: none;
-  }
+	.topbar {
+		position: relative;
+		flex-wrap: wrap;
+		align-items: flex-start;
+	}
 
-  .topbar-actions {
-    width: 100%;
-    justify-content: space-between;
-  }
+	.nav {
+		display: none;
+	}
 
-  .hero,
-  .story-grid,
-  .feature-grid,
-  .steps,
-  .bento-grid,
-  .pricing-grid,
-  .final-cta,
-  .footer {
-    grid-template-columns: 1fr;
-    display: grid;
-  }
+	.topbar-actions {
+		width: 100%;
+		justify-content: space-between;
+	}
 
-  .hero {
-    min-height: auto;
-  }
+	.hero {
+		grid-template-columns: 1fr;
+		min-height: auto;
+		gap: 2.5rem;
+	}
 
-  .story-stage {
-    margin-top: 4.5rem;
-  }
+	.story-grid {
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
+	}
 
-  .platform {
-    padding: 0;
-    border-radius: 0;
-  }
+	.story-large {
+		grid-column: span 2;
+	}
 
-  .hero-visual {
-    max-height: min(30rem, 78vh);
-    aspect-ratio: 4 / 3;
-  }
+	.feature-grid,
+	.steps,
+	.pricing-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1rem;
+	}
 
-  .hero-hud-primary {
-    right: 3%;
-  }
+	.feature-grid-four {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
 
-  .hero-hud-secondary {
-    left: 3%;
-  }
+	.bento-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1rem;
+	}
 
-  .hero-chip-cloud {
-    --chip-radius: 5.5rem;
-  }
+	.bento-feature {
+		grid-column: span 2;
+	}
 
-  .story-large,
-  .bento-feature {
-    grid-column: auto;
-  }
+	.final-cta,
+	.footer {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
 
-  .final-cta,
-  .footer {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
+	.final-cta {
+		width: 100%;
+	}
 
-  .final-cta {
-    width: 100%;
-  }
+	.story-stage {
+		margin-top: 4rem;
+	}
 
-  .hero-flow-map,
-  .activity-feed,
-  .agent-mini-stack {
-    position: relative;
-    top: auto;
-    right: auto;
-    left: auto;
-    bottom: auto;
-    margin-top: 1rem;
-    width: 100%;
-  }
+	.platform {
+		padding: 0;
+		border-radius: 0;
+	}
 
-  .section-connections {
-    display: none;
-  }
+	.hero-visual {
+		max-height: min(28rem, 75vh);
+		aspect-ratio: 4 / 3;
+	}
+
+	.hero-hud-primary {
+		right: 3%;
+	}
+
+	.hero-hud-secondary {
+		left: 3%;
+	}
+
+	.hero-chip-cloud {
+		--chip-radius: 5.5rem;
+	}
+
+	.hero-flow-map,
+	.activity-feed,
+	.agent-mini-stack {
+		position: relative;
+		top: auto;
+		right: auto;
+		left: auto;
+		bottom: auto;
+		margin-top: 1rem;
+		width: 100%;
+	}
+
+	.section-connections {
+		display: none;
+	}
+
+	.mini-kpi strong {
+		font-size: 1.5rem;
+	}
+
+	.pricing-card h3 {
+		font-size: clamp(2rem, 5vw, 2.5rem);
+	}
 }
 
 @media (max-width: 720px) {
-  .topbar-actions .ghost-link {
-    display: none;
-  }
+	:root {
+		--container-padding: 1.25rem;
+	}
 
-  main,
-  .topbar,
-  .footer {
-    width: min(calc(100% - 1.25rem), var(--container));
-  }
+	.topbar-actions .ghost-link {
+		display: none;
+	}
 
-  .hero,
-  .platform,
-  .logo-strip,
-  .story-stage,
-  .story-grid,
-  .how-it-works,
-  .use-cases,
-  .pricing {
-    margin-top: 3rem;
-  }
+	main,
+	.topbar,
+	.footer {
+		width: min(calc(100% - var(--container-padding) * 2), var(--container));
+	}
 
-  h1 {
-    font-size: clamp(2rem, 9vw, 2.75rem);
-  }
+	.hero,
+	.platform,
+	.logo-strip,
+	.story-stage,
+	.story-grid,
+	.how-it-works,
+	.use-cases,
+	.pricing {
+		margin-top: 2.5rem;
+	}
 
-  .section-heading h2,
-  .final-cta h2 {
-    font-size: clamp(2rem, 9vw, 2.35rem);
-  }
+	h1 {
+		font-size: clamp(2rem, 9vw, 2.75rem);
+	}
 
-  .hero-visual {
-    max-height: min(24rem, 72vh);
-    aspect-ratio: 4 / 3;
-  }
+	.section-heading h2,
+	.final-cta h2 {
+		font-size: clamp(2rem, 9vw, 2.35rem);
+	}
 
-  .hero-copy,
-  .section-heading,
-  .final-cta {
-    max-width: 100%;
-  }
+	.story-grid {
+		grid-template-columns: 1fr;
+		gap: 1rem;
+	}
 
-  .hero-actions,
-  .topbar-actions {
-    width: 100%;
-  }
+	.story-large {
+		grid-column: auto;
+		min-height: auto;
+	}
 
-  .hero-actions .button,
-  .topbar-actions .button,
-  .pricing-card .button {
-    width: 100%;
-  }
+	.feature-grid,
+	.feature-grid-four,
+	.steps,
+	.bento-grid,
+	.pricing-grid {
+		grid-template-columns: 1fr;
+		gap: 1rem;
+	}
 
-  .topbar-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
+	.bento-feature {
+		grid-column: auto;
+	}
 
-  .lang-switch {
-    width: 100%;
-    justify-content: center;
-  }
+	.hero-visual {
+		max-height: min(22rem, 68vh);
+		aspect-ratio: 4 / 3;
+	}
 
-  .lang-button {
-    flex: 1 1 0;
-  }
+	.hero-copy,
+	.section-heading,
+	.final-cta {
+		max-width: 100%;
+	}
 
-  .hero-proof {
-    flex-direction: column;
-  }
+	.hero-actions,
+	.topbar-actions {
+		width: 100%;
+	}
 
-  .hero-proof div,
-  .logo-row span {
-    width: 100%;
-  }
+	.hero-actions .button,
+	.topbar-actions .button,
+	.pricing-card .button {
+		width: 100%;
+	}
 
-  .section-scene-story {
-    height: 26rem;
-  }
+	.topbar-actions {
+		flex-direction: column;
+		align-items: stretch;
+	}
 
-  .hero-hud {
-    position: relative;
-    top: auto;
-    left: auto;
-    right: auto;
-    bottom: auto;
-    width: auto;
-    margin-top: 1rem;
-  }
+	.lang-switch {
+		width: 100%;
+		justify-content: center;
+	}
 
-  .hero-stage-shell {
-    inset: 0 0 6.5rem;
-  }
+	.lang-button {
+		flex: 1 1 0;
+	}
 
-  .hero-chip-cloud {
-    position: relative;
-    left: auto;
-    top: auto;
-    transform: none;
-    margin-top: 1rem;
-    width: 100%;
-    height: auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.6rem;
-  }
+	.hero-proof {
+		flex-direction: column;
+	}
 
-  .hero-chip-cloud span {
-    position: relative;
-    transform: none;
-    animation: none;
-    text-align: center;
-  }
+	.hero-proof div,
+	.logo-row span {
+		width: 100%;
+	}
 
-  .pricing-head {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+	.section-scene-story {
+		height: 22rem;
+	}
 
-  .footer {
-    align-items: flex-start;
-  }
+	.hero-hud {
+		position: relative;
+		top: auto;
+		left: auto;
+		right: auto;
+		bottom: auto;
+		width: auto;
+		margin-top: 1rem;
+	}
+
+	.hero-stage-shell {
+		inset: 0 0 6rem;
+	}
+
+	.hero-chip-cloud {
+		position: relative;
+		left: auto;
+		top: auto;
+		transform: none;
+		margin-top: 1rem;
+		width: 100%;
+		height: auto;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.6rem;
+	}
+
+	.hero-chip-cloud span {
+		position: relative;
+		transform: none;
+		animation: none;
+		text-align: center;
+	}
+
+	.mini-kpi strong {
+		font-size: 1.35rem;
+	}
+
+	.mini-chart {
+		height: 4.5rem;
+	}
+
+	.pricing-head {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.pricing-card h3 {
+		font-size: clamp(1.75rem, 6vw, 2.25rem);
+	}
+
+	.feature-card {
+		min-height: auto;
+	}
+
+	.logo-row {
+		gap: 0.6rem;
+	}
+
+	.final-cta {
+		padding: 1.5rem;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 1.25rem;
+	}
+
+	.footer {
+		align-items: flex-start;
+	}
 }
 
 @media (max-width: 520px) {
-  .topbar {
-    padding-top: 1rem;
-  }
+	:root {
+		--container-padding: 1rem;
+	}
 
-  main,
-  .topbar,
-  .footer {
-    width: min(calc(100% - 1rem), var(--container));
-  }
+	.topbar {
+		padding-top: 1rem;
+	}
 
-  .hero {
-    gap: 1.75rem;
-    padding-top: 2rem;
-  }
+	main,
+	.topbar,
+	.footer {
+		width: min(calc(100% - var(--container-padding) * 2), var(--container));
+	}
 
-  .logo-row span,
-  .hero-proof div,
-  .feature-card,
-  .story-card,
-  .step-card,
-  .bento-card,
-  .pricing-card,
-  .final-cta {
-    padding-left: 1.1rem;
-    padding-right: 1.1rem;
-  }
+	.hero {
+		gap: 1.5rem;
+		padding-top: 1.75rem;
+	}
 
-  .hero-chip-cloud {
-    grid-template-columns: 1fr;
-  }
+	.hero,
+	.platform,
+	.logo-strip,
+	.story-stage,
+	.story-grid,
+	.how-it-works,
+	.use-cases,
+	.pricing {
+		margin-top: 2rem;
+	}
+
+	.section-heading h2,
+	.final-cta h2 {
+		font-size: clamp(1.75rem, 8vw, 2.1rem);
+	}
+
+	.logo-row span,
+	.hero-proof div,
+	.feature-card,
+	.story-card,
+	.step-card,
+	.bento-card,
+	.pricing-card,
+	.final-cta,
+	.logo-strip {
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+
+	.hero-chip-cloud {
+		grid-template-columns: 1fr;
+	}
+
+	.mini-kpi strong {
+		font-size: 1.25rem;
+	}
+
+	.pricing-card h3 {
+		font-size: 1.5rem;
+	}
+
+	.feature-card h3,
+	.story-card h3,
+	.step-card h3,
+	.bento-card h3 {
+		font-size: 1.35rem;
+	}
+
+	.final-cta {
+		padding: 1.25rem;
+		margin-top: 3rem;
+	}
 }
 
 @media (prefers-reduced-motion: reduce) {
