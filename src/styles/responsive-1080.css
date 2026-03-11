@@ -111,41 +111,51 @@
   }
 
   .hero-visual {
-    max-height: min(32rem, 75vh);
-    aspect-ratio: 16 / 10;
+    aspect-ratio: auto;
+    min-height: min(40rem, 78vh);
+    max-height: min(40rem, 78vh);
+  }
+
+  .hero-stage-overlay {
+    inset: 0.9rem;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto;
+  }
+
+  .hero-flow-map {
+    grid-column: 1;
+    grid-row: 1;
   }
 
   .hero-hud-primary {
-    right: 1rem;
+    grid-column: 2;
+    grid-row: 1 / span 2;
   }
 
   .hero-hud-secondary {
-    display: none;
+    grid-column: 1;
+    grid-row: 2;
   }
 
   .hero-chip-cloud {
-    --chip-radius: 7.4rem;
+    grid-column: 1 / span 2;
+    grid-row: 3;
+    width: min(100%, 15rem);
+    height: 15rem;
+    min-height: 15rem;
+    --chip-radius: clamp(3.6rem, 8vw, 5.6rem);
   }
 
-  .hero-flow-map,
-  .activity-feed,
-  .agent-mini-stack {
-    position: relative;
-    top: auto;
-    right: auto;
-    left: auto;
-    bottom: auto;
-    margin-top: 1rem;
-    width: min(100%, 22rem);
-  }
-
-  .hero-flow-map,
   .activity-feed {
-    margin-inline: auto;
+    grid-column: 2;
+    grid-row: 4;
   }
 
   .agent-mini-stack {
-    max-width: min(100%, 22rem);
+    grid-column: 1;
+    grid-row: 4;
+    width: min(100%, 18rem);
+    max-width: 18rem;
   }
 
   .section-connections {

@@ -1,11 +1,58 @@
-import { Canvas, useFrame } from '@react-three/fiber';
+/// <reference path="./three-jsx.d.ts" />
+import { Canvas, useFrame, type ThreeElements } from '@react-three/fiber';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { createRenderer } from './three-renderer';
 
+type Variant = 'platform' | 'story' | 'cta';
+
 type SectionExperienceProps = {
-  readonly variant: 'platform' | 'story' | 'cta';
+  readonly variant: Variant;
 };
+
+function spreadByVariant(variant: Variant): number {
+  if (variant === 'story') return 5.4;
+  if (variant === 'platform') return 5.9;
+  return 4.4;
+}
+
+function waveColorByVariant(variant: Variant): string {
+  if (variant === 'story') return '#60a5fa';
+  if (variant === 'platform') return '#22d3ee';
+  return '#c084fc';
+}
+
+function waveSizeByVariant(variant: Variant): number {
+  if (variant === 'story') return 0.03;
+  if (variant === 'platform') return 0.037;
+  return 0.034;
+}
+
+function ambientIntensityByVariant(variant: Variant): number {
+  return variant === 'cta' ? 0.5 : 0.42;
+}
+
+function pointLightIntensityCta(variant: Variant): number {
+  return variant === 'cta' ? 20 : 16;
+}
+
+function pointLightIntensityPlatform(variant: Variant): number {
+  return variant === 'platform' ? 18 : 14;
+}
+
+function ribbonRadiusByVariant(variant: Variant, a: number, b: number, c: number): number {
+  if (variant === 'story') return a;
+  if (variant === 'platform') return b;
+  return c;
+}
+
+function ribbonColorCta(variant: Variant): string {
+  return variant === 'cta' ? '#22d3ee' : '#38bdf8';
+}
+
+function ribbonRadiusCta(variant: Variant): number {
+  return variant === 'cta' ? 1.4 : 2;
+}
 
 function Ribbon({
   color,
@@ -30,10 +77,18 @@ function Ribbon({
     ref.current.position.y = Math.sin(state.clock.elapsedTime * speed) * 0.12;
   });
 
+  const meshProps: Pick<ThreeElements['mesh'], 'rotation'> = { rotation };
+  const torusProps: Pick<ThreeElements['torusGeometry'], 'args'> = { args: [radius, 0.035, 14, 180] };
+  const materialProps: Pick<ThreeElements['meshBasicMaterial'], 'color' | 'transparent' | 'opacity' | 'blending'> = {
+    color,
+    transparent: true,
+    opacity: 0.34,
+    blending: THREE.AdditiveBlending
+  };
   return (
-    <mesh ref={ref} rotation={rotation}>
-      <torusGeometry args={[radius, 0.035, 14, 180]} />
-      <meshBasicMaterial color={color} transparent opacity={0.34} blending={THREE.AdditiveBlending} />
+    <mesh ref={ref} {...meshProps}>
+      <torusGeometry {...torusProps} />
+      <meshBasicMaterial {...materialProps} />
     </mesh>
   );
 }
@@ -44,10 +99,9 @@ function WaveField({ variant }: SectionExperienceProps) {
     const count = 520;
     const values = new Float32Array(count * 3);
 
+    const spread = spreadByVariant(variant);
     for (let index = 0; index < count; index += 1) {
       const cursor = index * 3;
-      const spread = variant === 'story' ? 5.4 : variant === 'platform' ? 5.9 : 4.4;
-
       values[cursor] = (Math.random() - 0.5) * spread;
       values[cursor + 1] = (Math.random() - 0.5) * 2.8;
       values[cursor + 2] = (Math.random() - 0.5) * spread;
@@ -66,19 +120,24 @@ function WaveField({ variant }: SectionExperienceProps) {
     ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.18) * (0.1 + scrollMix * 0.14);
   });
 
+  const attachProps: Pick<ThreeElements['bufferAttribute'], 'attach' | 'args'> = {
+    attach: 'attributes-position',
+    args: [positions, 3]
+  };
+  const pointsMatProps: Pick<ThreeElements['pointsMaterial'], 'color' | 'size' | 'transparent' | 'opacity' | 'depthWrite' | 'blending'> = {
+    color: waveColorByVariant(variant),
+    size: waveSizeByVariant(variant),
+    transparent: true,
+    opacity: 0.75,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending
+  };
   return (
     <points ref={ref}>
       <bufferGeometry>
-        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        <bufferAttribute {...attachProps} />
       </bufferGeometry>
-      <pointsMaterial
-        color={variant === 'story' ? '#60a5fa' : variant === 'platform' ? '#22d3ee' : '#c084fc'}
-        size={variant === 'story' ? 0.03 : variant === 'platform' ? 0.037 : 0.034}
-        transparent
-        opacity={0.75}
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
-      />
+      <pointsMaterial {...pointsMatProps} />
     </points>
   );
 }
@@ -86,13 +145,27 @@ function WaveField({ variant }: SectionExperienceProps) {
 function SectionScene({ variant }: SectionExperienceProps) {
   return (
     <>
-      <ambientLight intensity={variant === 'cta' ? 0.5 : 0.42} />
-      <pointLight position={[2, 1, 3]} intensity={variant === 'cta' ? 20 : 16} distance={12} color="#60a5fa" />
-      <pointLight position={[-2, -1, 2]} intensity={variant === 'platform' ? 18 : 14} distance={12} color="#a78bfa" />
+      <ambientLight {...({ intensity: ambientIntensityByVariant(variant) } as ThreeElements['ambientLight'])} />
+      <pointLight
+        {...({
+          position: [2, 1, 3],
+          intensity: pointLightIntensityCta(variant),
+          distance: 12,
+          color: '#60a5fa'
+        } as ThreeElements['pointLight'])}
+      />
+      <pointLight
+        {...({
+          position: [-2, -1, 2],
+          intensity: pointLightIntensityPlatform(variant),
+          distance: 12,
+          color: '#a78bfa'
+        } as ThreeElements['pointLight'])}
+      />
       <WaveField variant={variant} />
-      <Ribbon color="#60a5fa" radius={variant === 'story' ? 2.8 : variant === 'platform' ? 3.2 : 2.2} speed={0.28} rotation={[0.8, 0.2, 0]} />
-      <Ribbon color="#a78bfa" radius={variant === 'story' ? 2.2 : variant === 'platform' ? 2.6 : 1.8} speed={-0.32} rotation={[1.1, 0.6, 0.4]} />
-      <Ribbon color={variant === 'cta' ? '#22d3ee' : '#38bdf8'} radius={variant === 'cta' ? 1.4 : 2} speed={0.42} rotation={[0.4, 1.2, 0.3]} />
+      <Ribbon color="#60a5fa" radius={ribbonRadiusByVariant(variant, 2.8, 3.2, 2.2)} speed={0.28} rotation={[0.8, 0.2, 0]} />
+      <Ribbon color="#a78bfa" radius={ribbonRadiusByVariant(variant, 2.2, 2.6, 1.8)} speed={-0.32} rotation={[1.1, 0.6, 0.4]} />
+      <Ribbon color={ribbonColorCta(variant)} radius={ribbonRadiusCta(variant)} speed={0.42} rotation={[0.4, 1.2, 0.3]} />
     </>
   );
 }

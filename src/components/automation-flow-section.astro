@@ -1,0 +1,175 @@
+---
+type AutomationStageNode = {
+	readonly eyebrow: string;
+	readonly title: string;
+	readonly text: string;
+};
+
+type AutomationSectionCopy = {
+	readonly stage: {
+		readonly tag: string;
+		readonly status: string;
+		readonly loopLabel: string;
+		readonly lanes: readonly string[];
+		readonly phaseNotes: readonly string[];
+		readonly nodes: readonly AutomationStageNode[];
+	};
+};
+
+interface Props {
+	readonly section: AutomationSectionCopy;
+}
+
+const { section } = Astro.props;
+
+const nodeClasses = [
+	'node-intake',
+	'node-parser',
+	'node-triage',
+	'node-router',
+	'node-slack',
+	'node-jira',
+	'node-sandbox',
+	'node-qa',
+	'node-resolve'
+] as const;
+
+const nodePhaseMap = [0, 0, 1, 2, 2, 2, 2, 2, 3] as const;
+
+const pipes = [
+	{ className: 'pipe-intake-parser', phase: 0 },
+	{ className: 'pipe-parser-triage', phase: 1 },
+	{ className: 'pipe-triage-router', phase: 2 },
+	{ className: 'pipe-router-slack', phase: 2 },
+	{ className: 'pipe-router-jira', phase: 2 },
+	{ className: 'pipe-triage-sandbox', phase: 2 },
+	{ className: 'pipe-sandbox-qa', phase: 2 },
+	{ className: 'pipe-jira-qa', phase: 2 },
+	{ className: 'pipe-slack-qa', phase: 2 },
+	{ className: 'pipe-qa-resolve', phase: 3 }
+] as const;
+
+const ambientParticles = [
+	{ left: '8%', top: '18%', size: '0.5rem', phase: 0 },
+	{ left: '19%', top: '10%', size: '0.72rem', phase: 0 },
+	{ left: '30%', top: '20%', size: '0.44rem', phase: 0 },
+	{ left: '41%', top: '14%', size: '0.64rem', phase: 1 },
+	{ left: '51%', top: '24%', size: '0.48rem', phase: 1 },
+	{ left: '61%', top: '15%', size: '0.68rem', phase: 2 },
+	{ left: '80%', top: '19%', size: '0.52rem', phase: 2 },
+	{ left: '76%', top: '42%', size: '0.82rem', phase: 2 },
+	{ left: '18%', top: '56%', size: '0.72rem', phase: 2 },
+	{ left: '46%', top: '62%', size: '0.58rem', phase: 2 },
+	{ left: '63%', top: '68%', size: '0.5rem', phase: 3 },
+	{ left: '76%', top: '60%', size: '0.74rem', phase: 3 }
+] as const;
+
+const coreOrbitCount = 3;
+const pipeTrailCount = 3;
+---
+
+<section class="automation-flow" data-flow-section="automation" data-automation-section>
+	<article class="automation-stage glass-card" data-automation-stage>
+		<header class="automation-stage-header">
+			<div class="automation-stage-title">
+				<span class="card-tag" data-i18n="automation.stage.tag">{section.stage.tag}</span>
+				<div class="automation-stage-status">
+					<span class="status-dot"></span>
+					<span data-i18n="automation.stage.status">{section.stage.status}</span>
+				</div>
+			</div>
+
+			<div class="automation-phase-display">
+				<span class="automation-phase-prefix" data-i18n="automation.stage.loopLabel">
+					{section.stage.loopLabel}
+				</span>
+				<strong data-automation-phase-label data-i18n="automation.stage.lanes.0">
+					{section.stage.lanes[0]}
+				</strong>
+				<p data-automation-phase-note data-i18n="automation.stage.phaseNotes.0">
+					{section.stage.phaseNotes[0]}
+				</p>
+				<span class="automation-phase-counter" data-automation-phase-counter>01 / 04</span>
+			</div>
+		</header>
+
+		<div class="automation-stage-lanes" aria-label="Loop phases">
+			{section.stage.lanes.map((lane, index) => (
+				<div class="automation-phase-pill" data-automation-phase-pill data-phase-index={index}>
+					<span class="automation-phase-pill-label" data-i18n={`automation.stage.lanes.${index}`}>
+						{lane}
+					</span>
+					<span
+						class="automation-phase-pill-note sr-only"
+						data-automation-phase-note-source
+						data-i18n={`automation.stage.phaseNotes.${index}`}
+					>
+						{section.stage.phaseNotes[index]}
+					</span>
+				</div>
+			))}
+		</div>
+
+			<div class="automation-stage-board">
+				<div class="automation-particle-field" aria-hidden="true">
+					{ambientParticles.map((particle) => (
+						<span
+							class="automation-ambient-particle"
+							data-automation-ambient-particle
+							data-phase-index={particle.phase}
+							style={`--particle-left:${particle.left}; --particle-top:${particle.top}; --particle-size:${particle.size};`}
+						></span>
+					))}
+				</div>
+
+				<div class="automation-core-badge" data-automation-core aria-hidden="true">
+					<div class="automation-core-orbits">
+						{Array.from({ length: coreOrbitCount }).map((_, index) => (
+							<span
+								class:list={['automation-core-orbit', `orbit-${index + 1}`]}
+								data-automation-core-orbit
+							>
+								<span class="automation-core-spark"></span>
+							</span>
+						))}
+					</div>
+					<span>NEXA</span>
+					<strong>Flow</strong>
+				</div>
+
+				{pipes.map((pipe, index) => (
+					<div
+						class:list={['automation-pipe', pipe.className]}
+						data-automation-pipe
+						data-pipe-index={index}
+						data-phase-index={pipe.phase}
+						aria-hidden="true"
+					>
+						{Array.from({ length: pipeTrailCount }).map((_, trailIndex) => (
+							<span
+								class:list={['automation-packet', `packet-${trailIndex + 1}`]}
+								data-automation-packet
+								data-trail-index={trailIndex}
+							></span>
+						))}
+					</div>
+				))}
+
+				{section.stage.nodes.map((node, index) => (
+					<article
+						class:list={['automation-node', nodeClasses[index]]}
+						data-automation-node
+						data-node-index={index}
+						data-phase-index={nodePhaseMap[index]}
+					>
+						<span class="automation-node-step">{String(index + 1).padStart(2, '0')}</span>
+						<span class="automation-node-eyebrow" data-i18n={`automation.stage.nodes.${index}.eyebrow`}>
+							{node.eyebrow}
+						</span>
+						<h3 data-i18n={`automation.stage.nodes.${index}.title`}>{node.title}</h3>
+						<p data-i18n={`automation.stage.nodes.${index}.text`}>{node.text}</p>
+					</article>
+				))}
+			</div>
+	</article>
+</section>

@@ -72,7 +72,7 @@ function ActivityFeed() {
       <div className="panel-label">Live activity</div>
       <div className="activity-feed-list">
         {entries.map((entry) => (
-          <div className="activity-feed-item" key={entry}>
+          <div className="activity-feed-item" data-hero-feed-item key={entry}>
             <span className="activity-dot"></span>
             <span>{entry}</span>
           </div>
@@ -142,58 +142,61 @@ export function HeroExperience({ integrations }: HeroExperienceProps) {
         <div className="hero-stage-vignette" aria-hidden="true"></div>
         <div className="hero-stage-scanline" aria-hidden="true"></div>
       </div>
-
-      <div className="hero-hud hero-hud-primary glass-card" data-hero-panel>
-        <div className="panel-label">Lead Engine</div>
-        <div className="hero-hud-list">
-          {PIPELINE_STEPS.map((step, index) => (
-            <div className="hero-hud-sequence" key={step}>
-              <div className={`flow-pill ${flowPillClass(index, activeStep)}`}>{step}</div>
-              {index < PIPELINE_STEPS.length - 1 ? <div className={`flow-line ${flowLineClass(index, activeStep)}`}></div> : null}
+      <div className="hero-stage-overlay">
+        <div className="hero-flow-map glass-card" data-hero-panel>
+          {LIVE_FLOW.map((node, index) => (
+            <div className="hero-flow-node" data-hero-flow-node key={node}>
+              <span>{node}</span>
+              {index < LIVE_FLOW.length - 1 ? <div className="hero-flow-connector"></div> : null}
             </div>
           ))}
         </div>
-      </div>
 
-      <div className="hero-hud hero-hud-secondary glass-card" data-hero-panel>
-        <div className="mini-kpi">
-          <span>{currentKpi.label}</span>
-          <strong>{currentKpi.score}%</strong>
-          <small className="mini-kpi-trend">{currentKpi.trend}</small>
+        <div className="hero-hud hero-hud-primary glass-card" data-hero-panel>
+          <div className="panel-label">Lead Engine</div>
+          <div className="hero-hud-list">
+            {PIPELINE_STEPS.map((step, index) => (
+              <div className="hero-hud-sequence" key={step}>
+                <div className={`flow-pill ${flowPillClass(index, activeStep)}`} data-hero-hud-pill>
+                  {step}
+                </div>
+                {index < PIPELINE_STEPS.length - 1 ? <div className={`flow-line ${flowLineClass(index, activeStep)}`}></div> : null}
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="mini-chart">
-          {currentKpi.bars.map((bar, index) => (
-            <span key={`${sceneIndex}-${bar}-${index}`} style={{ '--bar-height': `${bar}%`, '--bar-delay': `${index * 0.08}s` } as CSSProperties}></span>
+
+        <div className="hero-hud hero-hud-secondary glass-card" data-hero-panel>
+          <div className="mini-kpi">
+            <span>{currentKpi.label}</span>
+            <strong>{currentKpi.score}%</strong>
+            <small className="mini-kpi-trend">{currentKpi.trend}</small>
+          </div>
+          <div className="mini-chart">
+            {currentKpi.bars.map((bar, index) => (
+              <span key={`${sceneIndex}-${bar}-${index}`} style={{ '--bar-height': `${bar}%`, '--bar-delay': `${index * 0.08}s` } as CSSProperties}></span>
+            ))}
+          </div>
+        </div>
+
+        <div className="hero-chip-cloud" data-hero-panel>
+          {heroIntegrations.map((integration, index) => (
+            <span key={integration} data-hero-chip style={{ '--chip-angle': `${(360 / heroIntegrations.length) * index}deg` } as CSSProperties}>
+              {integration}
+            </span>
           ))}
         </div>
-      </div>
 
-      <div className="hero-chip-cloud" data-hero-panel>
-        {heroIntegrations.map((integration, index) => (
-          <span key={integration} data-hero-chip style={{ '--chip-angle': `${(360 / heroIntegrations.length) * index}deg` } as CSSProperties}>
-            {integration}
-          </span>
-        ))}
-      </div>
+        <ActivityFeed />
 
-      <div className="hero-flow-map glass-card" data-hero-panel>
-        {LIVE_FLOW.map((node, index) => (
-          <div className="hero-flow-node" key={node}>
-            <span>{node}</span>
-            {index < LIVE_FLOW.length - 1 ? <div className="hero-flow-connector"></div> : null}
-          </div>
-        ))}
-      </div>
-
-      <ActivityFeed />
-
-      <div className="agent-mini-stack" data-hero-panel>
-        {AGENT_CARDS.map((card, index) => (
-          <div className={`agent-mini-card glass-card ${sceneIndex % AGENT_CARDS.length === index ? 'is-emphasis' : ''}`} key={card.label}>
-            <span>{card.label}</span>
-            <strong>{card.status}</strong>
-          </div>
-        ))}
+        <div className="agent-mini-stack" data-hero-panel>
+          {AGENT_CARDS.map((card, index) => (
+            <div className={`agent-mini-card glass-card ${sceneIndex % AGENT_CARDS.length === index ? 'is-emphasis' : ''}`} data-hero-agent-card key={card.label}>
+              <span>{card.label}</span>
+              <strong>{card.status}</strong>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

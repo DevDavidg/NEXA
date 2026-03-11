@@ -1,9 +1,10 @@
-import type { CanvasProps } from '@react-three/fiber';
 import * as THREE from 'three';
 
 const SCENE_BG = 0x020617;
 
-export function createRenderer(props: Parameters<NonNullable<CanvasProps['gl']>>[0]) {
+type GlProps = Partial<THREE.WebGLRendererParameters>;
+
+export function createRenderer(props?: GlProps) {
   const renderer = new THREE.WebGLRenderer({
     ...props,
     antialias: false,

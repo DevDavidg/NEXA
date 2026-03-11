@@ -3,6 +3,7 @@ import '../styles/global.css';
 import { HeroExperience } from '../hero-experience';
 import { LandingEffects } from '../landing-effects';
 import { SectionExperience } from '../section-experience';
+import AutomationFlowSection from '../components/automation-flow-section.astro';
 
 const translations = {
 	en: {
@@ -86,6 +87,128 @@ const translations = {
 					agents: ['Lead Agent', 'Support Agent', 'Ops Agent']
 				}
 			]
+		},
+		automation: {
+			kicker: 'Bug automation',
+			title: 'A bug appears. The flow triages, routes, alerts, and verifies automatically.',
+			text:
+				'We design n8n-style incident automations that turn raw errors into structured action: parse context, score severity, notify the right team, create tickets, and keep risky fixes behind approval.',
+			badges: ['Sentry', 'Logs', 'Slack', 'Jira', 'Human approval'],
+			stage: {
+				tag: 'n8n-style error orchestration',
+				status: 'Automation live',
+				loopLabel: 'Loop phase',
+				lanes: ['Observe', 'Enrich', 'Decide', 'Resolve'],
+				phaseNotes: [
+					'Errors enter from Sentry, logs, forms, and support channels.',
+					'Context is normalized and AI scores impact plus likely root cause.',
+					'The flow branches into alerts, tickets, sandbox repair, and approval.',
+					'The incident closes only after verification and state sync.'
+				],
+				nodes: [
+					{
+						eyebrow: 'Trigger',
+						title: 'Bug intake',
+						text: 'Ingests Sentry issues, logs, forms, and support reports.'
+					},
+					{
+						eyebrow: 'Parser',
+						title: 'Context builder',
+						text: 'Deduplicates traces and attaches release, user, and endpoint context.'
+					},
+					{
+						eyebrow: 'AI',
+						title: 'AI triage',
+						text: 'Summarizes likely cause, impact, and confidence before routing.'
+					},
+					{
+						eyebrow: 'Router',
+						title: 'Severity router',
+						text: 'Chooses alert-only, ticket + owner, or automated repair branch.'
+					},
+					{
+						eyebrow: 'Notify',
+						title: 'Slack escalation',
+						text: 'Sends an incident brief to the correct channel with proposed actions.'
+					},
+					{
+						eyebrow: 'Track',
+						title: 'Jira ticket',
+						text: 'Opens owner, priority, checklist, and rollback metadata.'
+					},
+					{
+						eyebrow: 'Repair',
+						title: 'Patch sandbox',
+						text: 'Tests safe remediation steps outside production first.'
+					},
+					{
+						eyebrow: 'Gate',
+						title: 'QA approval',
+						text: 'Human checkpoint before any sensitive write or deploy action.'
+					},
+					{
+						eyebrow: 'Resolve',
+						title: 'Verified close',
+						text: 'Updates status, stores learnings, and closes the loop.'
+					}
+				],
+				footer: ['Retries + backoff', 'Severity-aware branching', 'Approval required for high-risk fixes']
+			},
+			feed: {
+				tag: 'Live incident feed',
+				title: 'The system narrates what is happening while the workflow continues to run.',
+				items: [
+					{
+						label: 'Critical',
+						title: 'Checkout API spike detected',
+						meta: 'Sentry issue merged with gateway logs',
+						time: '06s ago'
+					},
+					{
+						label: 'AI summary',
+						title: 'Likely root cause isolated',
+						meta: 'Confidence 0.82, rollback suggested',
+						time: '12s ago'
+					},
+					{
+						label: 'Escalated',
+						title: 'Ticket + Slack room created',
+						meta: 'Owner assigned, QA gate enabled',
+						time: '19s ago'
+					}
+				]
+			},
+			metrics: {
+				tag: 'Response pack',
+				title: 'Each branch writes structured output back into your stack.',
+				cards: [
+					{
+						value: '74%',
+						label: 'auto-classified',
+						note: 'without manual triage'
+					},
+					{
+						value: '6m',
+						label: 'mean first response',
+						note: 'from signal to routed action'
+					},
+					{
+						value: '93%',
+						label: 'duplicate noise filtered',
+						note: 'before it reaches engineering'
+					}
+				]
+			},
+			safeguards: {
+				tag: 'Safety layer',
+				title: 'Automation moves fast. Risky production actions still stay controlled.',
+				items: [
+					'Rollback notes and blast-radius summary generated before approval.',
+					'Low-confidence incidents switch to human review automatically.',
+					'Fallback branch opens a war room if repair tests fail.'
+				],
+				rail: ['Detect', 'Route', 'Approve', 'Verify']
+			}
 		},
 		how: {
 			kicker: 'How we work',
@@ -254,6 +377,128 @@ const translations = {
 					agents: ['Agente de leads', 'Agente de soporte', 'Agente de operaciones']
 				}
 			]
+		},
+		automation: {
+			kicker: 'Automatizacion de bugs',
+			title: 'Aparece un bug. El flujo lo clasifica, enruta, alerta y verifica automaticamente.',
+			text:
+				'Diseñamos automatizaciones de incidentes tipo n8n que convierten errores crudos en accion estructurada: parsean contexto, puntuan severidad, notifican al equipo correcto, crean tickets y dejan los fixes sensibles detras de aprobacion.',
+			badges: ['Sentry', 'Logs', 'Slack', 'Jira', 'Aprobacion humana'],
+			stage: {
+				tag: 'Orquestacion de errores tipo n8n',
+				status: 'Automatizacion activa',
+				loopLabel: 'Fase activa',
+				lanes: ['Observar', 'Enriquecer', 'Decidir', 'Resolver'],
+				phaseNotes: [
+					'Los errores entran desde Sentry, logs, formularios y soporte.',
+					'El contexto se normaliza y la IA puntua impacto y causa probable.',
+					'El flujo abre ramas para alertas, tickets, sandbox de patch y aprobacion.',
+					'El incidente se cierra solo despues de verificar y sincronizar estado.'
+				],
+				nodes: [
+					{
+						eyebrow: 'Trigger',
+						title: 'Ingesta de bug',
+						text: 'Captura issues de Sentry, logs, formularios y reportes de soporte.'
+					},
+					{
+						eyebrow: 'Parser',
+						title: 'Constructor de contexto',
+						text: 'Deduplica traces y adjunta release, usuario y endpoint.'
+					},
+					{
+						eyebrow: 'IA',
+						title: 'Triage IA',
+						text: 'Resume causa probable, impacto y confianza antes del routing.'
+					},
+					{
+						eyebrow: 'Router',
+						title: 'Router de severidad',
+						text: 'Decide si solo alerta, crea ticket + owner o dispara reparacion.'
+					},
+					{
+						eyebrow: 'Notify',
+						title: 'Escalacion en Slack',
+						text: 'Envia resumen del incidente al canal correcto con acciones sugeridas.'
+					},
+					{
+						eyebrow: 'Track',
+						title: 'Ticket en Jira',
+						text: 'Abre owner, prioridad, checklist y metadata de rollback.'
+					},
+					{
+						eyebrow: 'Repair',
+						title: 'Sandbox de patch',
+						text: 'Prueba pasos seguros de remediacion fuera de produccion primero.'
+					},
+					{
+						eyebrow: 'Gate',
+						title: 'Aprobacion QA',
+						text: 'Checkpoint humano antes de cualquier write sensible o deploy.'
+					},
+					{
+						eyebrow: 'Resolve',
+						title: 'Cierre verificado',
+						text: 'Actualiza estado, guarda aprendizajes y cierra el loop.'
+					}
+				],
+				footer: ['Reintentos + backoff', 'Branching segun severidad', 'Aprobacion para fixes de alto riesgo']
+			},
+			feed: {
+				tag: 'Feed de incidentes',
+				title: 'El sistema explica que esta pasando mientras el workflow sigue corriendo.',
+				items: [
+					{
+						label: 'Critico',
+						title: 'Pico detectado en Checkout API',
+						meta: 'Issue de Sentry unido con logs del gateway',
+						time: 'hace 06s'
+					},
+					{
+						label: 'Resumen IA',
+						title: 'Causa probable aislada',
+						meta: 'Confianza 0.82, rollback sugerido',
+						time: 'hace 12s'
+					},
+					{
+						label: 'Escalado',
+						title: 'Ticket + sala de Slack creados',
+						meta: 'Owner asignado, QA gate activo',
+						time: 'hace 19s'
+					}
+				]
+			},
+			metrics: {
+				tag: 'Paquete de respuesta',
+				title: 'Cada branch escribe salida estructurada de vuelta en tu stack.',
+				cards: [
+					{
+						value: '74%',
+						label: 'autoclasificado',
+						note: 'sin triage manual'
+					},
+					{
+						value: '6m',
+						label: 'primer response promedio',
+						note: 'de la senal a la accion enrutada'
+					},
+					{
+						value: '93%',
+						label: 'ruido duplicado filtrado',
+						note: 'antes de llegar a ingenieria'
+					}
+				]
+			},
+			safeguards: {
+				tag: 'Capa de seguridad',
+				title: 'La automatizacion acelera. Las acciones riesgosas siguen controladas.',
+				items: [
+					'Se genera rollback y resumen de impacto antes de aprobar.',
+					'Los incidentes de baja confianza pasan automaticamente a revision humana.',
+					'El fallback abre una war room si fallan las pruebas de reparacion.'
+				],
+				rail: ['Detectar', 'Enrutar', 'Aprobar', 'Verificar']
+			}
 		},
 		how: {
 			kicker: 'Cómo trabajamos',
@@ -552,6 +797,8 @@ const translationsJson = JSON.stringify(translations);
 						</article>
 					</div>
 				</section>
+
+				<AutomationFlowSection section={copy.automation} />
 
 				<section class="how-it-works">
 					<div class="section-heading" data-reveal>
