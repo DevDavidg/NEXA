@@ -13,7 +13,18 @@ export function LandingEffects() {
     const isDesktop = globalThis.matchMedia('(min-width: 960px)').matches;
 
     const revealTargets = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+    const heroSection = document.querySelector<HTMLElement>('.hero');
     const heroStage = document.querySelector<HTMLElement>('[data-hero-stage]');
+    const heroCopy = document.querySelector<HTMLElement>('.hero-copy');
+    const heroProofCards = Array.from(document.querySelectorAll<HTMLElement>('.hero-proof > *'));
+    const heroPanels = heroStage ? Array.from(heroStage.querySelectorAll<HTMLElement>('[data-hero-panel]')) : [];
+    const heroShell = heroStage?.querySelector<HTMLElement>('.hero-stage-shell');
+    const heroThreeStage = heroStage?.querySelector<HTMLElement>('.hero-three-stage');
+    const heroParticleStage = heroStage?.querySelector<HTMLElement>('.hero-particle-stage');
+    const heroRadar = heroStage?.querySelector<HTMLElement>('.hero-stage-radar');
+    const heroStreams = heroStage ? Array.from(heroStage.querySelectorAll<HTMLElement>('.hero-stage-data-stream')) : [];
+    const heroBeams = heroStage ? Array.from(heroStage.querySelectorAll<HTMLElement>('.hero-stage-beam')) : [];
+    const heroGlows = heroStage ? Array.from(heroStage.querySelectorAll<HTMLElement>('.hero-stage-glow')) : [];
     const parallaxLayers = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax-layer]'));
     const buttons = Array.from(document.querySelectorAll<HTMLElement>('.button'));
     const magneticTargets = [...buttons, ...Array.from(document.querySelectorAll<HTMLElement>('[data-hero-chip]'))];
@@ -27,11 +38,80 @@ export function LandingEffects() {
 
     const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
     intro
+      .fromTo('.topbar', { autoAlpha: 0, y: -18 }, { autoAlpha: 1, y: 0, duration: 0.65 })
       .fromTo('[data-hero-eyebrow]', { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.55 })
       .fromTo('[data-hero-title]', { autoAlpha: 0, y: 32 }, { autoAlpha: 1, y: 0, duration: 0.85 }, '-=0.2')
       .fromTo('[data-hero-text]', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.7 }, '-=0.45')
       .fromTo('[data-hero-actions]', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.6 }, '-=0.45')
       .fromTo('[data-hero-proof]', { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.6 }, '-=0.35');
+
+    if (heroStage) {
+      intro
+        .fromTo(
+          heroStage,
+          { autoAlpha: 0, y: 36, scale: 0.96 },
+          { autoAlpha: 1, y: 0, scale: 1, duration: 1.05, ease: 'power3.out' },
+          '-=1.1'
+        );
+
+      if (heroShell) {
+        intro.fromTo(
+          heroShell,
+          { rotateX: 14, rotateY: -16, transformPerspective: 1600 },
+          { rotateX: 0, rotateY: 0, duration: 1.35, ease: 'power3.out' },
+          '<'
+        );
+      }
+
+      if (heroThreeStage) {
+        intro.fromTo(
+          heroThreeStage,
+          { autoAlpha: 0, scale: 1.12 },
+          { autoAlpha: 0.8, scale: 1, duration: 1.3, ease: 'power2.out' },
+          '<'
+        );
+      }
+
+      if (heroParticleStage) {
+        intro.fromTo(
+          heroParticleStage,
+          { autoAlpha: 0, scale: 0.92, filter: 'blur(10px)' },
+          { autoAlpha: 0.96, scale: 1, filter: 'blur(0px)', duration: 1.45, ease: 'power2.out' },
+          '-=0.95'
+        );
+      }
+
+      if (heroBeams.length || heroGlows.length || heroStreams.length) {
+        intro.fromTo(
+          [...heroBeams, ...heroGlows, ...heroStreams],
+          { autoAlpha: 0, scaleX: 0.72, transformOrigin: 'center center' },
+          { autoAlpha: 1, scaleX: 1, duration: 0.9, stagger: 0.05 },
+          '-=1.05'
+        );
+      }
+
+      if (heroRadar) {
+        intro.fromTo(heroRadar, { autoAlpha: 0, scale: 0.86 }, { autoAlpha: 1, scale: 1, duration: 1.1 }, '-=0.9');
+      }
+
+      if (heroPanels.length) {
+        intro.fromTo(
+          heroPanels,
+          { autoAlpha: 0, y: 20, scale: 0.92 },
+          { autoAlpha: 1, y: 0, scale: 1, duration: 0.85, stagger: 0.08, ease: 'power3.out' },
+          '-=0.85'
+        );
+      }
+
+      if (heroProofCards.length) {
+        intro.fromTo(
+          heroProofCards,
+          { autoAlpha: 0, y: 14, scale: 0.94 },
+          { autoAlpha: 1, y: 0, scale: 1, duration: 0.55, stagger: 0.08 },
+          '-=0.8'
+        );
+      }
+    }
 
     const scrollAnimations: ScrollTrigger[] = [];
 
@@ -119,17 +199,15 @@ export function LandingEffects() {
       const y = event.clientY / globalThis.innerHeight;
 
       if (!prefersReducedMotion) {
-        xTo(String(x));
-        yTo(String(y));
+        xTo(x);
+        yTo(y);
       }
 
       if (heroStage && !prefersReducedMotion && isDesktop) {
-        const shell = heroStage.querySelector<HTMLElement>('.hero-stage-shell');
-        const panels = heroStage.querySelectorAll<HTMLElement>('[data-hero-panel]');
         const tiltY = (x - 0.5) * 14;
         const tiltX = (0.5 - y) * 10;
-        if (shell) {
-          gsap.to(shell, {
+        if (heroShell) {
+          gsap.to(heroShell, {
             rotateY: tiltY,
             rotateX: tiltX,
             duration: 1.1,
@@ -138,14 +216,38 @@ export function LandingEffects() {
             transformOrigin: 'center center'
           });
         }
-        if (panels.length) {
-          gsap.to(panels, {
+        if (heroPanels.length) {
+          gsap.to(heroPanels, {
             rotateY: -tiltY * 0.85,
             rotateX: -tiltX * 0.85,
             duration: 1.1,
             ease: 'power3.out',
             transformPerspective: 1600,
             transformOrigin: 'center center'
+          });
+        }
+        if (heroThreeStage) {
+          gsap.to(heroThreeStage, {
+            xPercent: (x - 0.5) * 3.4,
+            yPercent: (y - 0.5) * -4.2,
+            duration: 1.2,
+            ease: 'power3.out'
+          });
+        }
+        if (heroParticleStage) {
+          gsap.to(heroParticleStage, {
+            xPercent: (x - 0.5) * 1.8,
+            yPercent: (y - 0.5) * -2.4,
+            duration: 1.2,
+            ease: 'power3.out'
+          });
+        }
+        if (heroRadar) {
+          gsap.to(heroRadar, {
+            xPercent: (x - 0.5) * -2.2,
+            yPercent: (y - 0.5) * 2.8,
+            duration: 1.2,
+            ease: 'power3.out'
           });
         }
       }
@@ -251,6 +353,52 @@ export function LandingEffects() {
         }
       });
     });
+
+    if (heroSection && heroStage && !prefersReducedMotion) {
+      const heroStageTween = gsap.to(heroStage, {
+        yPercent: isDesktop ? 7 : 4,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: heroSection,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 0.7
+        }
+      });
+
+      scrollAnimations.push(heroStageTween.scrollTrigger!);
+
+      if (heroCopy) {
+        const heroCopyTween = gsap.to(heroCopy, {
+          yPercent: isDesktop ? -8 : -4,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: heroSection,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 0.7
+          }
+        });
+
+        scrollAnimations.push(heroCopyTween.scrollTrigger!);
+      }
+
+      heroPanels.forEach((panel, index) => {
+        const panelTween = gsap.to(panel, {
+          yPercent: index % 2 === 0 ? -4 : 4,
+          xPercent: index % 3 === 0 ? 2 : -2,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: heroSection,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 0.55
+          }
+        });
+
+        scrollAnimations.push(panelTween.scrollTrigger!);
+      });
+    }
 
     const corePulse = globalThis.setInterval(() => {
       if (!heroStage) {

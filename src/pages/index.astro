@@ -15,6 +15,8 @@ const translations = {
 			solutions: 'Solutions',
 			useCases: 'Use Cases',
 			engagements: 'Engagements',
+			status: 'Shipping AI systems live',
+			statusShort: 'Live systems',
 			bookCall: 'Book strategy call'
 		},
 		hero: {
@@ -180,6 +182,8 @@ const translations = {
 			solutions: 'Soluciones',
 			useCases: 'Casos de uso',
 			engagements: 'Engagements',
+			status: 'Sistemas IA operando en vivo',
+			statusShort: 'Operando',
 			bookCall: 'Reservar llamada'
 		},
 		hero: {
@@ -373,24 +377,46 @@ const translationsJson = JSON.stringify(translations);
 				<path class="section-connector-path" d="M620 1280 C860 1460, 260 1640, 560 1840" />
 			</svg>
 			<header class="topbar">
-				<a class="brand" href="#hero">
-					<span class="brand-mark">N</span>
-					<span>NEXA</span>
-				</a>
-				<nav class="nav">
-					<a href="#platform" data-i18n="nav.solutions">{copy.nav.solutions}</a>
-					<a href="#use-cases" data-i18n="nav.useCases">{copy.nav.useCases}</a>
-					<a href="#pricing" data-i18n="nav.engagements">{copy.nav.engagements}</a>
-				</nav>
-				<div class="topbar-actions">
-					<div class="lang-switch" aria-label="Language switch">
-						<button class="lang-button is-active" data-lang-toggle="en" type="button">EN</button>
-						<button class="lang-button" data-lang-toggle="es" type="button">ES</button>
-					</div>
-					<a class="ghost-link" href="#pricing" data-i18n="nav.engagements">{copy.nav.engagements}</a>
-					<a class="button button-primary button-sm" href="mailto:hello@nexa.app?subject=Strategy%20call" data-i18n="nav.bookCall">
-						{copy.nav.bookCall}
+				<div class="topbar-shell">
+					<a class="brand brand-topbar" href="#hero">
+						<span class="brand-mark">N</span>
+						<span class="brand-copy">
+							<strong>NEXA</strong>
+							<span class="brand-meta">
+								<span data-i18n="hero.eyebrow">{copy.hero.eyebrow}</span>
+								<span class="brand-meta-separator" aria-hidden="true"></span>
+								<span class="brand-live">
+									<span class="status-dot"></span>
+									<span data-i18n="nav.statusShort">{copy.nav.statusShort}</span>
+								</span>
+							</span>
+						</span>
 					</a>
+					<div class="topbar-middle">
+						<nav class="nav nav-topbar">
+							<a href="#platform">
+								<span class="nav-index">01</span>
+								<span data-i18n="nav.solutions">{copy.nav.solutions}</span>
+							</a>
+							<a href="#use-cases">
+								<span class="nav-index">02</span>
+								<span data-i18n="nav.useCases">{copy.nav.useCases}</span>
+							</a>
+							<a href="#pricing">
+								<span class="nav-index">03</span>
+								<span data-i18n="nav.engagements">{copy.nav.engagements}</span>
+							</a>
+						</nav>
+					</div>
+					<div class="topbar-actions">
+						<div class="lang-switch" aria-label="Language switch">
+							<button class="lang-button is-active" data-lang-toggle="en" type="button">EN</button>
+							<button class="lang-button" data-lang-toggle="es" type="button">ES</button>
+						</div>
+						<a class="button button-primary button-sm button-nav" href="mailto:hello@nexa.app?subject=Strategy%20call" data-i18n="nav.bookCall">
+							{copy.nav.bookCall}
+						</a>
+					</div>
 				</div>
 			</header>
 
