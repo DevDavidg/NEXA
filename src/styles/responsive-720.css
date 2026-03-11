@@ -1,0 +1,202 @@
+@media (max-width: 720px) {
+  :root {
+    --container-padding: 1.25rem;
+  }
+
+  main,
+  .topbar,
+  .footer {
+    width: min(calc(100% - var(--container-padding) * 2), var(--container));
+  }
+
+  .topbar-shell {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.95rem;
+    padding: 0.92rem;
+  }
+
+  .brand-topbar {
+    width: 100%;
+  }
+
+  .topbar-middle,
+  .topbar .nav {
+    width: 100%;
+  }
+
+  .topbar-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .button-nav {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .hero,
+  .platform,
+  .logo-strip,
+  .story-stage,
+  .story-grid,
+  .how-it-works,
+  .use-cases,
+  .pricing {
+    margin-top: 2.5rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 9vw, 2.75rem);
+  }
+
+  .section-heading h2,
+  .final-cta h2 {
+    font-size: clamp(2rem, 9vw, 2.35rem);
+  }
+
+  .story-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .story-large {
+    grid-column: auto;
+    min-height: auto;
+  }
+
+  .feature-grid,
+  .feature-grid-four,
+  .steps,
+  .bento-grid,
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .bento-feature {
+    grid-column: auto;
+  }
+
+  .hero-visual {
+    max-height: min(22rem, 68vh);
+    aspect-ratio: 16 / 10;
+  }
+
+  .hero-copy,
+  .section-heading,
+  .final-cta {
+    max-width: 100%;
+  }
+
+  .hero-actions,
+  .topbar-actions {
+    width: 100%;
+  }
+
+  .hero-actions .button,
+  .topbar-actions .button,
+  .pricing-card .button {
+    width: 100%;
+  }
+
+  .lang-switch {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .lang-button {
+    flex: 1 1 0;
+  }
+
+	.hero-proof {
+		flex-direction: column;
+	}
+
+	.hero-proof div,
+	.logo-row span {
+		width: 100%;
+	}
+
+	.hero-scroll-cue {
+		display: none;
+	}
+
+  .section-scene-story {
+    height: 22rem;
+  }
+
+  .hero-hud {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    width: auto;
+    margin-top: 1rem;
+  }
+
+  .hero-stage-shell {
+    inset: 0 0 6rem;
+  }
+
+  .hero-chip-cloud {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    margin-top: 1rem;
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+
+  .hero-chip-cloud span {
+    position: relative;
+    transform: none;
+    animation: none;
+    text-align: center;
+  }
+
+  .mini-kpi strong {
+    font-size: 1.35rem;
+  }
+
+  .mini-chart {
+    height: 4.5rem;
+  }
+
+  .pricing-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pricing-card h3 {
+    font-size: clamp(1.75rem, 6vw, 2.25rem);
+  }
+
+  .feature-card {
+    min-height: auto;
+  }
+
+  .logo-row {
+    gap: 0.6rem;
+  }
+
+  .final-cta {
+    padding: 1.5rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.25rem;
+  }
+
+  .footer {
+    align-items: flex-start;
+  }
+}

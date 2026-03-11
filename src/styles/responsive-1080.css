@@ -1,0 +1,162 @@
+@media (max-width: 1080px) {
+  :root {
+    --container-padding: 1.25rem;
+  }
+
+  .topbar {
+    position: relative;
+    top: 0;
+    padding-top: 1rem;
+  }
+
+  .topbar-shell {
+    grid-template-columns: auto auto;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .topbar-middle {
+    grid-column: 1 / -1;
+    order: 3;
+    justify-content: flex-start;
+  }
+
+  .nav-topbar {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 1rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 0.2rem;
+  }
+
+  .nav-topbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .topbar .nav {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+  }
+
+  .topbar-actions {
+    width: auto;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+  }
+
+	.hero {
+		grid-template-columns: minmax(0, 1fr);
+		min-height: auto;
+		gap: 3rem;
+	}
+
+	.hero-backdrop {
+		inset: 0;
+	}
+
+	.hero-copy-rings {
+		inset: -2rem auto auto -2rem;
+		width: 12rem;
+		height: 12rem;
+	}
+
+  .story-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .story-large {
+    grid-column: span 2;
+  }
+
+  .feature-grid,
+  .steps,
+  .pricing-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .feature-grid-four {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bento-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .bento-feature {
+    grid-column: span 2;
+  }
+
+  .final-cta,
+  .footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .final-cta {
+    width: 100%;
+  }
+
+  .story-stage {
+    margin-top: 4rem;
+  }
+
+  .platform {
+    padding: 0;
+    border-radius: 0;
+  }
+
+  .hero-visual {
+    max-height: min(32rem, 75vh);
+    aspect-ratio: 16 / 10;
+  }
+
+  .hero-hud-primary {
+    right: 1rem;
+  }
+
+  .hero-hud-secondary {
+    display: none;
+  }
+
+  .hero-chip-cloud {
+    --chip-radius: 7.4rem;
+  }
+
+  .hero-flow-map,
+  .activity-feed,
+  .agent-mini-stack {
+    position: relative;
+    top: auto;
+    right: auto;
+    left: auto;
+    bottom: auto;
+    margin-top: 1rem;
+    width: min(100%, 22rem);
+  }
+
+  .hero-flow-map,
+  .activity-feed {
+    margin-inline: auto;
+  }
+
+  .agent-mini-stack {
+    max-width: min(100%, 22rem);
+  }
+
+  .section-connections {
+    display: none;
+  }
+
+  .mini-kpi strong {
+    font-size: 1.5rem;
+  }
+
+  .pricing-card h3 {
+    font-size: clamp(2rem, 5vw, 2.5rem);
+  }
+}

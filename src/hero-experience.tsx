@@ -1,6 +1,11 @@
 import { Suspense, lazy, startTransition, useEffect, useState, type CSSProperties, type Dispatch, type SetStateAction } from 'react';
 import { HeroParticleStage } from './hero-particle-stage';
 
+interface NavigatorWithCapabilities extends Navigator {
+  connection?: { saveData?: boolean };
+  deviceMemory?: number;
+}
+
 const LazyHeroThreeStage = lazy(() => import('./hero-three-stage').then((module) => ({ default: module.HeroThreeStage })));
 
 type HeroExperienceProps = {
@@ -30,6 +35,24 @@ const AGENT_CARDS = [
 
 function applyNextEntry(next: string, setEntries: Dispatch<SetStateAction<string[]>>) {
   setEntries((prev) => [next, ...prev.filter((item) => item !== next)].slice(0, 3));
+}
+
+function nextSceneIndex(current: number): number {
+  return (current + 1) % KPI_STATES.length;
+}
+
+function advanceScene(setSceneIndex: Dispatch<SetStateAction<number>>) {
+  startTransition(() => setSceneIndex(nextSceneIndex));
+}
+
+function flowPillClass(index: number, activeStep: number): string {
+  if (index === activeStep) return 'active is-current';
+  if (index < activeStep) return 'is-complete';
+  return '';
+}
+
+function flowLineClass(index: number, activeStep: number): string {
+  return index < activeStep ? 'is-live' : '';
 }
 
 function ActivityFeed() {
@@ -65,17 +88,21 @@ export function HeroExperience({ integrations }: HeroExperienceProps) {
   const [showThreeStage, setShowThreeStage] = useState(false);
 
   useEffect(() => {
-    const id = globalThis.setInterval(() => {
-      startTransition(() => {
-        setSceneIndex((current) => (current + 1) % KPI_STATES.length);
-      });
-    }, 1800);
-
+    const id = globalThis.setInterval(() => advanceScene(setSceneIndex), 1800);
     return () => globalThis.clearInterval(id);
   }, []);
 
   useEffect(() => {
     if (globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    const nav = navigator as NavigatorWithCapabilities;
+    const saveData = nav.connection?.saveData ?? false;
+    const hardwareThreads = navigator.hardwareConcurrency ?? 8;
+    const memory = nav.deviceMemory ?? 8;
+
+    if (saveData || hardwareThreads <= 4 || memory <= 4) {
       return;
     }
 
@@ -121,8 +148,8 @@ export function HeroExperience({ integrations }: HeroExperienceProps) {
         <div className="hero-hud-list">
           {PIPELINE_STEPS.map((step, index) => (
             <div className="hero-hud-sequence" key={step}>
-              <div className={`flow-pill ${index === activeStep ? 'active is-current' : index < activeStep ? 'is-complete' : ''}`}>{step}</div>
-              {index < PIPELINE_STEPS.length - 1 ? <div className={`flow-line ${index < activeStep ? 'is-live' : ''}`}></div> : null}
+              <div className={`flow-pill ${flowPillClass(index, activeStep)}`}>{step}</div>
+              {index < PIPELINE_STEPS.length - 1 ? <div className={`flow-line ${flowLineClass(index, activeStep)}`}></div> : null}
             </div>
           ))}
         </div>

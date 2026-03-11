@@ -1,0 +1,82 @@
+@media (max-width: 520px) {
+  :root {
+    --container-padding: 1rem;
+  }
+
+  .topbar {
+    padding-top: 1rem;
+  }
+
+  main,
+  .topbar,
+  .footer {
+    width: min(calc(100% - var(--container-padding) * 2), var(--container));
+  }
+
+	.hero {
+		gap: 1.5rem;
+		padding-top: 1.75rem;
+	}
+
+	.brand-copy span {
+		display: none;
+	}
+
+	.hero-backdrop-line,
+	.hero-copy-rings {
+		display: none;
+	}
+
+  .hero,
+  .platform,
+  .logo-strip,
+  .story-stage,
+  .story-grid,
+  .how-it-works,
+  .use-cases,
+  .pricing {
+    margin-top: 2rem;
+  }
+
+  .section-heading h2,
+  .final-cta h2 {
+    font-size: clamp(1.75rem, 8vw, 2.1rem);
+  }
+
+  .logo-row span,
+  .hero-proof div,
+  .feature-card,
+  .story-card,
+  .step-card,
+  .bento-card,
+  .pricing-card,
+  .final-cta,
+  .logo-strip {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .hero-chip-cloud {
+    grid-template-columns: 1fr;
+  }
+
+  .mini-kpi strong {
+    font-size: 1.25rem;
+  }
+
+  .pricing-card h3 {
+    font-size: 1.5rem;
+  }
+
+  .feature-card h3,
+  .story-card h3,
+  .step-card h3,
+  .bento-card h3 {
+    font-size: 1.35rem;
+  }
+
+  .final-cta {
+    padding: 1.25rem;
+    margin-top: 3rem;
+  }
+}

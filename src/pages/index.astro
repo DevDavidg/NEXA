@@ -26,6 +26,7 @@ const translations = {
 				'From lead generation and outreach to operations and internal tools, NEXA designs and implements AI systems operated by experts.',
 			primaryCta: 'Book a strategy call',
 			secondaryCta: 'See solutions',
+			scrollCue: 'Scroll to explore',
 			proof: [
 				{ value: 'Lead gen', label: 'systems' },
 				{ value: 'Sales & ops', label: 'automation' },
@@ -193,6 +194,7 @@ const translations = {
 				'Desde captación de leads y outreach hasta operaciones y herramientas internas, NEXA diseña e implementa sistemas con IA operados por expertos.',
 			primaryCta: 'Reservar llamada estratégica',
 			secondaryCta: 'Ver soluciones',
+			scrollCue: 'Sigue explorando',
 			proof: [
 				{ value: 'Lead gen', label: 'systems' },
 				{ value: 'Sales & ops', label: 'automation' },
@@ -422,7 +424,18 @@ const translationsJson = JSON.stringify(translations);
 
 			<main>
 				<section class="hero" id="hero" data-flow-section="hero">
+					<div class="hero-backdrop" aria-hidden="true">
+						<span class="hero-backdrop-orb hero-backdrop-orb-a" data-hero-ambient></span>
+						<span class="hero-backdrop-orb hero-backdrop-orb-b" data-hero-ambient></span>
+						<span class="hero-backdrop-line hero-backdrop-line-a" data-hero-ambient></span>
+						<span class="hero-backdrop-line hero-backdrop-line-b" data-hero-ambient></span>
+					</div>
 					<div class="hero-copy" data-reveal>
+						<div class="hero-copy-rings" aria-hidden="true">
+							<span class="hero-copy-ring hero-copy-ring-a" data-hero-copy-decor></span>
+							<span class="hero-copy-ring hero-copy-ring-b" data-hero-copy-decor></span>
+							<span class="hero-copy-ring hero-copy-ring-c" data-hero-copy-decor></span>
+						</div>
 						<div class="eyebrow" data-hero-eyebrow>
 							<span class="status-dot"></span>
 							<span data-i18n="hero.eyebrow">{copy.hero.eyebrow}</span>
@@ -439,11 +452,17 @@ const translationsJson = JSON.stringify(translations);
 						</div>
 						<div class="hero-proof" data-hero-proof>
 							{copy.hero.proof.map((item, index) => (
-								<div>
+								<div class="hero-proof-card" data-hero-proof-card>
 									<strong>{item.value}</strong>
 									<span data-i18n={`hero.proof.${index}.label`}>{item.label}</span>
 								</div>
 							))}
+						</div>
+						<div class="hero-scroll-cue" data-hero-scroll-cue>
+							<span class="hero-scroll-cue-mark">
+								<span class="hero-scroll-cue-dot"></span>
+							</span>
+							<span data-i18n="hero.scrollCue">{copy.hero.scrollCue}</span>
 						</div>
 					</div>
 

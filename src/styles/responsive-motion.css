@@ -1,0 +1,26 @@
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .hero-three-stage,
+  .hero-stage-radar-ring,
+  .hero-stage-radar-sweep,
+  .hero-stage-data-stream,
+  .hero-stage-glow,
+  .scene-hex,
+  .visual-orbit,
+  .hero-experience [data-hero-panel],
+  .activity-dot,
+  .agent-mini-card {
+    animation: none;
+  }
+
+  .live-bars span,
+  .hero-flow-connector,
+  .hero-stage-grid,
+  .hero-stage-beam,
+  h1 {
+    animation: none;
+  }
+}

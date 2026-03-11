@@ -3,10 +3,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { createRenderer } from './three-renderer';
 
-function SignalField() {
+function SignalField({ count }: { readonly count: number }) {
   const ref = useRef<THREE.Points>(null);
   const positions = useMemo(() => {
-    const count = 680;
     const values = new Float32Array(count * 3);
 
     for (let index = 0; index < count; index += 1) {
@@ -21,7 +20,7 @@ function SignalField() {
     }
 
     return values;
-  }, []);
+  }, [count]);
 
   useFrame((state) => {
     if (!ref.current) {
@@ -200,7 +199,7 @@ function GlowDiscs() {
   );
 }
 
-function HeroScene() {
+function HeroScene({ pointCount }: { readonly pointCount: number }) {
   return (
     <>
       <ambientLight intensity={0.45} />
@@ -208,7 +207,7 @@ function HeroScene() {
       <pointLight position={[-2, -1.1, 2.6]} intensity={12} distance={10} color="#a78bfa" />
       <GlowDiscs />
       <ArcNetwork />
-      <SignalField />
+      <SignalField count={pointCount} />
       <EnergyCore />
       <OrbitRibbon color="#38bdf8" radius={2.2} speed={0.26} rotation={[0.75, 0.3, 0.1]} />
       <OrbitRibbon color="#a78bfa" radius={1.64} speed={-0.34} rotation={[1.04, 0.92, 0.36]} />
@@ -221,6 +220,13 @@ export function HeroThreeStage() {
   const rootRef = useRef<HTMLDivElement>(null);
   const [isActive, setIsActive] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const pointCount = useMemo(() => {
+    if (typeof window === 'undefined') {
+      return 420;
+    }
+
+    return window.innerWidth > 1440 ? 520 : 420;
+  }, []);
 
   useEffect(() => {
     const media = globalThis.matchMedia('(prefers-reduced-motion: reduce)');
@@ -257,12 +263,12 @@ export function HeroThreeStage() {
       <Canvas
         className="hero-three-canvas"
         camera={{ position: [0, 0, 5.8], fov: 38 }}
-        dpr={[0.72, 1]}
+        dpr={[0.65, 0.9]}
         performance={{ min: 0.76 }}
         frameloop={isActive && !prefersReducedMotion ? 'always' : 'never'}
         gl={createRenderer}
       >
-        <HeroScene />
+        <HeroScene pointCount={pointCount} />
       </Canvas>
     </div>
   );

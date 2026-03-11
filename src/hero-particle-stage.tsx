@@ -38,9 +38,16 @@ type Sample = {
 
 const BRAND_TEXT = 'NEXA';
 const TAGLINE_TEXT = 'AUTONOMOUS REVENUE SYSTEM';
-const MAX_PARTICLES = 2600;
-const MAX_CONNECTIONS = 180;
+const MAX_PARTICLES = 2400;
+const MAX_CONNECTIONS = 160;
 const BURST_LIFETIME = 720;
+
+type QualityProfile = {
+  maxParticles: number;
+  maxConnections: number;
+  minFrameMs: number;
+  pointerScale: number;
+};
 
 function clamp(value: number, min: number, max: number) {
   return Math.max(min, Math.min(max, value));
@@ -124,7 +131,49 @@ function createBrandMask(ctx: CanvasRenderingContext2D, width: number, height: n
   ctx.stroke();
 }
 
-function extractSamples(maskCanvas: HTMLCanvasElement, focusPoints: readonly FocusPoint[]) {
+function getQualityProfile(width: number, height: number, dpr: number): QualityProfile {
+  const pixelLoad = width * height * dpr * dpr;
+  const hardwareThreads = navigator.hardwareConcurrency ?? 8;
+  const memory = navigator.deviceMemory ?? 8;
+  const saveData = navigator.connection?.saveData ?? false;
+  const lowPower = saveData || hardwareThreads <= 4 || memory <= 4;
+
+  if (lowPower) {
+    return {
+      maxParticles: 900,
+      maxConnections: 64,
+      minFrameMs: 34,
+      pointerScale: 0.72
+    };
+  }
+
+  if (pixelLoad > 2_000_000) {
+    return {
+      maxParticles: 1400,
+      maxConnections: 96,
+      minFrameMs: 29,
+      pointerScale: 0.86
+    };
+  }
+
+  if (pixelLoad > 1_350_000) {
+    return {
+      maxParticles: 1800,
+      maxConnections: 128,
+      minFrameMs: 25,
+      pointerScale: 0.94
+    };
+  }
+
+  return {
+    maxParticles: MAX_PARTICLES,
+    maxConnections: MAX_CONNECTIONS,
+    minFrameMs: 22,
+    pointerScale: 1
+  };
+}
+
+function extractSamples(maskCanvas: HTMLCanvasElement, focusPoints: readonly FocusPoint[], maxParticles: number) {
   const { width, height } = maskCanvas;
   const ctx = maskCanvas.getContext('2d', { willReadFrequently: true });
   if (!ctx) {
@@ -153,11 +202,11 @@ function extractSamples(maskCanvas: HTMLCanvasElement, focusPoints: readonly Foc
     }
   }
 
-  if (samples.length <= MAX_PARTICLES) {
+  if (samples.length <= maxParticles) {
     return samples;
   }
 
-  const stride = Math.ceil(samples.length / MAX_PARTICLES);
+  const stride = Math.ceil(samples.length / maxParticles);
   return samples.filter((_, index) => {
     if (index % stride === 0) {
       return true;
@@ -184,6 +233,10 @@ class HeroParticleEngine {
   private animationFrame = 0;
   private lastTick = 0;
   private startedAt = 0;
+  private maxParticles = MAX_PARTICLES;
+  private maxConnections = MAX_CONNECTIONS;
+  private minFrameMs = 22;
+  private pointerScale = 1;
 
   constructor(canvas: HTMLCanvasElement, prefersReducedMotion: boolean) {
     this.canvas = canvas;
@@ -207,6 +260,11 @@ class HeroParticleEngine {
     this.canvas.width = Math.floor(width * dpr);
     this.canvas.height = Math.floor(height * dpr);
     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    const quality = getQualityProfile(width, height, dpr);
+    this.maxParticles = quality.maxParticles;
+    this.maxConnections = quality.maxConnections;
+    this.minFrameMs = quality.minFrameMs;
+    this.pointerScale = quality.pointerScale;
     this.rebuild();
 
     if (this.prefersReducedMotion) {
@@ -316,8 +374,8 @@ class HeroParticleEngine {
     }
 
     createBrandMask(maskContext, width, height, this.focusPoints);
-    const samples = extractSamples(maskCanvas, this.focusPoints);
-    const highlightStride = Math.max(1, Math.ceil(samples.length / MAX_CONNECTIONS));
+    const samples = extractSamples(maskCanvas, this.focusPoints, this.maxParticles);
+    const highlightStride = Math.max(1, Math.ceil(samples.length / this.maxConnections));
 
     this.particles = samples.map((sample, index) => {
       const angle = Math.atan2(sample.y - centerY, sample.x - centerX);
@@ -360,7 +418,7 @@ class HeroParticleEngine {
     }
 
     const elapsed = time - this.lastTick;
-    if (elapsed < 22) {
+    if (elapsed < this.minFrameMs) {
       this.animationFrame = globalThis.requestAnimationFrame(this.tick);
       return;
     }
@@ -379,7 +437,7 @@ class HeroParticleEngine {
     const centerY = this.canvas.height * 0.52;
     const swirlX = centerX + Math.cos(time * 0.0012) * this.canvas.width * 0.024;
     const swirlY = centerY + Math.sin(time * 0.0015) * this.canvas.height * 0.022;
-    const pointerRadius = Math.max(120, Math.min(this.canvas.width, this.canvas.height) * 0.18);
+    const pointerRadius = Math.max(96, Math.min(this.canvas.width, this.canvas.height) * 0.18 * this.pointerScale);
 
     this.bursts = this.bursts.filter((burst) => time - burst.createdAt < BURST_LIFETIME);
 
@@ -412,14 +470,14 @@ class HeroParticleEngine {
         const pointerDistance = distance(particle.x, particle.y, this.pointer.x, this.pointer.y);
         if (pointerDistance < pointerRadius && pointerDistance > 0.1) {
           const force = (pointerRadius - pointerDistance) / pointerRadius;
-          particle.vx -= ((this.pointer.x - particle.x) / pointerDistance) * force * 0.7 * delta;
-          particle.vy -= ((this.pointer.y - particle.y) / pointerDistance) * force * 0.7 * delta;
+          particle.vx -= ((this.pointer.x - particle.x) / pointerDistance) * force * 0.62 * this.pointerScale * delta;
+          particle.vy -= ((this.pointer.y - particle.y) / pointerDistance) * force * 0.62 * this.pointerScale * delta;
         }
       }
 
       this.bursts.forEach((burst) => {
         const burstDistance = distance(particle.x, particle.y, burst.x, burst.y);
-        const burstRadius = Math.max(150, Math.min(this.canvas.width, this.canvas.height) * 0.24);
+        const burstRadius = Math.max(124, Math.min(this.canvas.width, this.canvas.height) * 0.22 * this.pointerScale);
         if (burstDistance >= burstRadius || burstDistance <= 0.1) {
           return;
         }
@@ -498,7 +556,7 @@ class HeroParticleEngine {
     let rendered = 0;
 
     this.particles.forEach((particle) => {
-      if (!particle.highlight || rendered >= MAX_CONNECTIONS) {
+      if (!particle.highlight || rendered >= this.maxConnections) {
         return;
       }
 
