@@ -202,16 +202,21 @@ function setupCardScrollAnimations(
     const trigger = ScrollTrigger.create({ trigger: card, start: 'top 88%', once: true, onEnter: () => tween.play() });
     scrollAnimations.push(trigger);
     if (!opts.prefersReducedMotion && opts.isDesktop) {
-      gsap.to(card, {
+      const parallaxTween = gsap.to(card, {
         yPercent: index % 2 === 0 ? -3 : 3,
         ease: 'none',
         scrollTrigger: { trigger: card, start: 'top bottom', end: 'bottom top', scrub: 0.8 }
       });
+      scrollAnimations.push(parallaxTween.scrollTrigger!);
     }
   });
 }
 
-function setupConnectorPaths(paths: SVGPathElement[], prefersReducedMotion: boolean): void {
+function setupConnectorPaths(
+  paths: SVGPathElement[],
+  scrollAnimations: ScrollTrigger[],
+  prefersReducedMotion: boolean
+): void {
   paths.forEach((path) => {
     const length = path.getTotalLength();
     path.style.strokeDasharray = String(length);
@@ -219,11 +224,12 @@ function setupConnectorPaths(paths: SVGPathElement[], prefersReducedMotion: bool
     if (prefersReducedMotion) {
       path.style.strokeDashoffset = '0';
     } else {
-      gsap.to(path, {
+      const tween = gsap.to(path, {
         strokeDashoffset: 0,
         ease: 'none',
         scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 0.8 }
       });
+      scrollAnimations.push(tween.scrollTrigger!);
     }
   });
 }
@@ -375,6 +381,34 @@ function setupLiveCounters(counters: HTMLElement[]): gsap.core.Tween[] {
   });
 }
 
+function hasAnimationTarget(target: HTMLElement | HTMLElement[] | null | undefined): target is HTMLElement | HTMLElement[] {
+  if (!target) return false;
+  return Array.isArray(target) ? target.length > 0 : true;
+}
+
+function addIntroAnimation(
+  timeline: gsap.core.Timeline,
+  target: HTMLElement | HTMLElement[] | null | undefined,
+  fromVars: gsap.TweenVars,
+  toVars: gsap.TweenVars,
+  position?: gsap.Position
+): void {
+  if (!hasAnimationTarget(target)) return;
+  timeline.fromTo(target, fromVars, toVars, position);
+}
+
+function playAutomationTimelines(timelines: Array<gsap.core.Timeline | null | undefined>, reset = false): void {
+  timelines.forEach((timeline) => {
+    if (!timeline) return;
+    if (reset) timeline.play(0);
+    else timeline.play();
+  });
+}
+
+function pauseAutomationTimelines(timelines: Array<gsap.core.Timeline | null | undefined>): void {
+  timelines.forEach((timeline) => timeline?.pause());
+}
+
 function setupAutomationFlowScrollTriggers(
   refs: LandingRefs,
   scrollAnimations: ScrollTrigger[],
@@ -424,60 +458,48 @@ function setupAutomationFlowScrollTriggers(
 
   const intro = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
 
-  intro.fromTo(
+  addIntroAnimation(
+    intro,
     automationStage,
     { autoAlpha: 0, y: 22, scale: 0.985, filter: 'blur(8px)' },
     { autoAlpha: 1, y: 0, scale: 1, filter: 'blur(0px)', duration: 0.9, ease: 'power2.out' }
   );
-
-  if (automationPhasePills.length) {
-    intro.fromTo(automationPhasePills, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.32, stagger: 0.04 }, '-=0.72');
-  }
-
-  if (automationAmbientParticles.length) {
-    intro.fromTo(
-      automationAmbientParticles,
-      { autoAlpha: 0, scale: 0.5 },
-      { autoAlpha: 0.24, scale: 0.78, duration: 0.8, stagger: 0.025, ease: 'sine.out' },
-      '-=0.68'
-    );
-  }
-
-  if (automationPipes.length) {
-    intro.fromTo(
-      automationPipes,
-      { autoAlpha: 0, scaleX: 0.72, transformOrigin: 'left center' },
-      { autoAlpha: 0.24, scaleX: 1, duration: 0.54, stagger: 0.03, ease: 'sine.out' },
-      '-=0.64'
-    );
-  }
-
-  if (automationCore) {
-    intro.fromTo(
-      automationCore,
-      { autoAlpha: 0, y: 12, scale: 0.9, filter: 'blur(8px)' },
-      { autoAlpha: 1, y: 0, scale: 1, filter: 'blur(0px)', duration: 0.7, ease: 'power2.out' },
-      '-=0.54'
-    );
-  }
-
-  if (automationCoreOrbits.length) {
-    intro.fromTo(
-      automationCoreOrbits,
-      { autoAlpha: 0, scale: 0.88 },
-      { autoAlpha: 0.38, scale: 1, duration: 0.72, stagger: 0.05, ease: 'sine.out' },
-      '-=0.58'
-    );
-  }
-
-  if (automationNodes.length) {
-    intro.fromTo(
-      automationNodes,
-      { autoAlpha: 0, y: 10, scale: 0.97 },
-      { autoAlpha: 0.56, y: 0, scale: 0.995, duration: 0.38, stagger: 0.035, ease: 'sine.out' },
-      '-=0.4'
-    );
-  }
+  addIntroAnimation(intro, automationPhasePills, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.32, stagger: 0.04 }, '-=0.72');
+  addIntroAnimation(
+    intro,
+    automationAmbientParticles,
+    { autoAlpha: 0, scale: 0.5 },
+    { autoAlpha: 0.24, scale: 0.78, duration: 0.8, stagger: 0.025, ease: 'sine.out' },
+    '-=0.68'
+  );
+  addIntroAnimation(
+    intro,
+    automationPipes,
+    { autoAlpha: 0, scaleX: 0.72, transformOrigin: 'left center' },
+    { autoAlpha: 0.24, scaleX: 1, duration: 0.54, stagger: 0.03, ease: 'sine.out' },
+    '-=0.64'
+  );
+  addIntroAnimation(
+    intro,
+    automationCore,
+    { autoAlpha: 0, y: 12, scale: 0.9, filter: 'blur(8px)' },
+    { autoAlpha: 1, y: 0, scale: 1, filter: 'blur(0px)', duration: 0.7, ease: 'power2.out' },
+    '-=0.54'
+  );
+  addIntroAnimation(
+    intro,
+    automationCoreOrbits,
+    { autoAlpha: 0, scale: 0.88 },
+    { autoAlpha: 0.38, scale: 1, duration: 0.72, stagger: 0.05, ease: 'sine.out' },
+    '-=0.58'
+  );
+  addIntroAnimation(
+    intro,
+    automationNodes,
+    { autoAlpha: 0, y: 10, scale: 0.97 },
+    { autoAlpha: 0.56, y: 0, scale: 0.995, duration: 0.38, stagger: 0.035, ease: 'sine.out' },
+    '-=0.4'
+  );
 
   const setReadout = (index: number): void => {
     const meta = phaseMeta[index];
@@ -779,9 +801,10 @@ function setupAutomationFlowScrollTriggers(
         )
         .add(buildPhaseStep(3, [{ nodeIndexes: [8], pipeIndexes: [9] }]));
 
-  const ambientFloat = !opts.prefersReducedMotion
-    ? gsap.timeline({ paused: true, repeat: -1, yoyo: true, defaults: { ease: 'sine.inOut' } })
-    : null;
+  const ambientFloat = opts.prefersReducedMotion
+    ? null
+    : gsap.timeline({ paused: true, repeat: -1, yoyo: true, defaults: { ease: 'sine.inOut' } });
+  const motionTimelines = [loop, ambientFloat] as Array<gsap.core.Timeline | null>;
 
   if (ambientFloat) {
     automationAmbientParticles.forEach((particle, index) => {
@@ -800,9 +823,8 @@ function setupAutomationFlowScrollTriggers(
     }
   }
 
-  const orbitSpin = !opts.prefersReducedMotion && automationCoreOrbits.length
-    ? gsap.timeline({ paused: true, repeat: -1 })
-    : null;
+  const orbitSpin = opts.prefersReducedMotion || !automationCoreOrbits.length ? null : gsap.timeline({ paused: true, repeat: -1 });
+  motionTimelines.push(orbitSpin);
 
   automationCoreOrbits.forEach((orbit, index) => {
     orbitSpin?.to(orbit, { rotate: index % 2 === 0 ? 360 : -360, duration: 13 + index * 2.5, ease: 'none' }, 0);
@@ -828,33 +850,17 @@ function setupAutomationFlowScrollTriggers(
         intro.play(0);
         return;
       }
-      loop?.play();
-      ambientFloat?.play();
-      orbitSpin?.play();
+      playAutomationTimelines(motionTimelines);
     },
-    onEnterBack: () => {
-      loop?.play();
-      ambientFloat?.play();
-      orbitSpin?.play();
-    },
-    onLeave: () => {
-      loop?.pause();
-      ambientFloat?.pause();
-      orbitSpin?.pause();
-    },
-    onLeaveBack: () => {
-      loop?.pause();
-      ambientFloat?.pause();
-      orbitSpin?.pause();
-    }
+    onEnterBack: () => playAutomationTimelines(motionTimelines),
+    onLeave: () => pauseAutomationTimelines(motionTimelines),
+    onLeaveBack: () => pauseAutomationTimelines(motionTimelines)
   });
   scrollAnimations.push(sectionTrigger);
 
   intro.eventCallback('onComplete', () => {
     if (!opts.prefersReducedMotion && sectionTrigger.isActive) {
-      loop?.play(0);
-      ambientFloat?.play(0);
-      orbitSpin?.play(0);
+      playAutomationTimelines(motionTimelines, true);
     }
   });
 
@@ -943,10 +949,22 @@ export function LandingEffects() {
 
     const scrollAnimations: ScrollTrigger[] = [];
     setupCardScrollAnimations(refs.cards, scrollAnimations, opts);
-    setupConnectorPaths(refs.connectorPaths, opts.prefersReducedMotion);
+    setupConnectorPaths(refs.connectorPaths, scrollAnimations, opts.prefersReducedMotion);
 
     const heroSetters = createHeroTweenSetters(refs);
     const handlePointerMove = createPointerMoveHandler(xTo, yTo, opts, heroSetters, refs);
+    let pointerFrame = 0;
+    let pendingPointerEvent: PointerEvent | null = null;
+    const handlePointerMoveRaf = (event: PointerEvent) => {
+      pendingPointerEvent = event;
+      if (pointerFrame) return;
+      pointerFrame = globalThis.requestAnimationFrame(() => {
+        pointerFrame = 0;
+        if (!pendingPointerEvent) return;
+        handlePointerMove(pendingPointerEvent);
+        pendingPointerEvent = null;
+      });
+    };
     const magneticCleanups = setupMagneticTargets(refs.magneticTargets, opts);
     const tiltCleanups = setupTiltCards(refs.cards, opts);
     const handleScroll = createScrollHandler(refs, opts.prefersReducedMotion);
@@ -954,18 +972,18 @@ export function LandingEffects() {
     setupHeroScrollTriggers(refs, scrollAnimations, opts);
     const automationMotion = setupAutomationFlowScrollTriggers(refs, scrollAnimations, opts);
 
-    globalThis.addEventListener('pointermove', handlePointerMove, { passive: true });
+    globalThis.addEventListener('pointermove', handlePointerMoveRaf, { passive: true });
     globalThis.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
 
     return () => {
       observer.disconnect();
-      globalThis.removeEventListener('pointermove', handlePointerMove);
+      globalThis.removeEventListener('pointermove', handlePointerMoveRaf);
+      if (pointerFrame) globalThis.cancelAnimationFrame(pointerFrame);
       globalThis.removeEventListener('scroll', handleScroll);
       magneticCleanups.forEach((cleanup) => cleanup());
       tiltCleanups.forEach((cleanup) => cleanup());
       scrollAnimations.forEach((trigger) => trigger.kill());
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
       counterTweens.forEach((tween) => tween.kill());
       automationMotion?.intro.kill();
       automationMotion?.loop?.kill();

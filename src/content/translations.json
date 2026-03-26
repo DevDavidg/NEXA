@@ -1,0 +1,433 @@
+{
+  "en": {
+    "lang": "en",
+    "title": "NEXA Systems | AI Automation Studio",
+    "metaDescription": "NEXA is an AI systems studio that designs, automates, and operates custom solutions for modern companies. Lead gen, sales automation, and AI products.",
+    "integrations": ["n8n", "HubSpot", "OpenAI", "Supabase", "Resend", "Cal.com"],
+    "nav": {
+      "solutions": "Solutions",
+      "useCases": "Use Cases",
+      "engagements": "Engagements",
+      "status": "Shipping AI systems live",
+      "statusShort": "Live systems",
+      "bookCall": "Book strategy call"
+    },
+    "hero": {
+      "eyebrow": "AI Systems Studio",
+      "title": "We build AI automations, agents, and products that solve real business problems.",
+      "text": "From lead generation and outreach to operations and internal tools, NEXA designs and implements AI systems operated by experts.",
+      "primaryCta": "Book a strategy call",
+      "secondaryCta": "See solutions",
+      "scrollCue": "Scroll to explore",
+      "proof": [
+        { "value": "Lead gen", "label": "systems" },
+        { "value": "Sales & ops", "label": "automation" },
+        { "value": "Custom AI", "label": "products" }
+      ]
+    },
+    "heroExperience": {
+      "liveActivityLabel": "Live activity",
+      "leadEngineLabel": "Lead Engine",
+      "feedEvents": [
+        "+ New lead detected",
+        "AI scored prospect: 91%",
+        "Proposal generated",
+        "Workflow completed",
+        "Agent responded to ticket"
+      ],
+      "liveFlow": ["Lead", "AI score", "Automation", "Result"],
+      "pipelineSteps": ["Lead detected", "Intent scored", "Handoff ready"],
+      "kpiStates": [
+        { "label": "Leads qualified", "score": 94, "trend": "+18% this week", "bars": [36, 48, 44, 74, 68, 92] },
+        { "label": "Reply probability", "score": 91, "trend": "Outreach optimized", "bars": [32, 52, 58, 72, 78, 88] },
+        { "label": "Meeting readiness", "score": 97, "trend": "Handoff synced", "bars": [44, 58, 66, 82, 76, 96] }
+      ],
+      "agentCards": [
+        { "label": "Lead Agent", "status": "live" },
+        { "label": "Support Agent", "status": "active" },
+        { "label": "Ops Agent", "status": "running" }
+      ]
+    },
+    "logoStrip": "Connected stack",
+    "platform": {
+      "kicker": "What we build",
+      "title": "AI systems and automation for companies that need real execution.",
+      "text": "We design, implement, and operate solutions that automate growth, sales, and operations. No generic platform-custom systems built by experts.",
+      "pillars": [
+        {
+          "title": "AI Lead Engine",
+          "description": "Systems that find, qualify, and prioritize prospects automatically. From sourcing to scoring to handoff."
+        },
+        {
+          "title": "AI Sales Automation",
+          "description": "Automate outreach, follow-up, scoring, and commercial handoff. Personalized at scale."
+        },
+        {
+          "title": "AI Internal Operations",
+          "description": "Automate internal tasks, support, reports, backoffice, and repetitive processes."
+        },
+        {
+          "title": "Custom AI Products",
+          "description": "Design and build internal tools, dashboards, agents, or SaaS products powered by AI."
+        }
+      ]
+    },
+    "story": {
+      "cards": [
+        {
+          "tag": "Live orchestration",
+          "title": "From signal to outcome in a single operating flow.",
+          "text": "Discovery, qualification, execution. We combine events, AI reasoning, and multi-step actions into systems that keep moving.",
+          "nodes": ["Signal", "AI decision", "Routing", "Result"]
+        },
+        {
+          "tag": "AI insights",
+          "title": "Understand what your business needs right now.",
+          "signals": [
+            "High-value prospect detected",
+            "Pipeline bottleneck identified",
+            "Automation opportunity flagged"
+          ]
+        },
+        {
+          "tag": "Agents",
+          "title": "Task-specific AI workers across sales, ops, and support.",
+          "agents": ["Lead Agent", "Support Agent", "Ops Agent"]
+        }
+      ]
+    },
+    "automation": {
+      "kicker": "Bug automation",
+      "title": "A bug appears. The flow triages, routes, alerts, and verifies automatically.",
+      "text": "We design n8n-style incident automations that turn raw errors into structured action: parse context, score severity, notify the right team, create tickets, and keep risky fixes behind approval.",
+      "badges": ["Sentry", "Logs", "Slack", "Jira", "Human approval"],
+      "stage": {
+        "tag": "n8n-style error orchestration",
+        "status": "Automation live",
+        "loopLabel": "Loop phase",
+        "lanes": ["Observe", "Enrich", "Decide", "Resolve"],
+        "phaseNotes": [
+          "Errors enter from Sentry, logs, forms, and support channels.",
+          "Context is normalized and AI scores impact plus likely root cause.",
+          "The flow branches into alerts, tickets, sandbox repair, and approval.",
+          "The incident closes only after verification and state sync."
+        ],
+        "nodes": [
+          { "eyebrow": "Trigger", "title": "Bug intake", "text": "Ingests Sentry issues, logs, forms, and support reports." },
+          { "eyebrow": "Parser", "title": "Context builder", "text": "Deduplicates traces and attaches release, user, and endpoint context." },
+          { "eyebrow": "AI", "title": "AI triage", "text": "Summarizes likely cause, impact, and confidence before routing." },
+          { "eyebrow": "Router", "title": "Severity router", "text": "Chooses alert-only, ticket + owner, or automated repair branch." },
+          { "eyebrow": "Notify", "title": "Slack escalation", "text": "Sends an incident brief to the correct channel with proposed actions." },
+          { "eyebrow": "Track", "title": "Jira ticket", "text": "Opens owner, priority, checklist, and rollback metadata." },
+          { "eyebrow": "Repair", "title": "Patch sandbox", "text": "Tests safe remediation steps outside production first." },
+          { "eyebrow": "Gate", "title": "QA approval", "text": "Human checkpoint before any sensitive write or deploy action." },
+          { "eyebrow": "Resolve", "title": "Verified close", "text": "Updates status, stores learnings, and closes the loop." }
+        ],
+        "footer": ["Retries + backoff", "Severity-aware branching", "Approval required for high-risk fixes"]
+      },
+      "feed": {
+        "tag": "Live incident feed",
+        "title": "The system narrates what is happening while the workflow continues to run.",
+        "items": [
+          { "label": "Critical", "title": "Checkout API spike detected", "meta": "Sentry issue merged with gateway logs", "time": "06s ago" },
+          { "label": "AI summary", "title": "Likely root cause isolated", "meta": "Confidence 0.82, rollback suggested", "time": "12s ago" },
+          { "label": "Escalated", "title": "Ticket + Slack room created", "meta": "Owner assigned, QA gate enabled", "time": "19s ago" }
+        ]
+      },
+      "metrics": {
+        "tag": "Response pack",
+        "title": "Each branch writes structured output back into your stack.",
+        "cards": [
+          { "value": "74%", "label": "auto-classified", "note": "without manual triage" },
+          { "value": "6m", "label": "mean first response", "note": "from signal to routed action" },
+          { "value": "93%", "label": "duplicate noise filtered", "note": "before it reaches engineering" }
+        ]
+      },
+      "safeguards": {
+        "tag": "Safety layer",
+        "title": "Automation moves fast. Risky production actions still stay controlled.",
+        "items": [
+          "Rollback notes and blast-radius summary generated before approval.",
+          "Low-confidence incidents switch to human review automatically.",
+          "Fallback branch opens a war room if repair tests fail."
+        ],
+        "rail": ["Detect", "Route", "Approve", "Verify"]
+      }
+    },
+    "how": {
+      "kicker": "How we work",
+      "title": "Audit. Design. Deploy.",
+      "steps": [
+        { "index": "01", "title": "Audit", "description": "We analyze your current operations and identify automation opportunities." },
+        { "index": "02", "title": "Design", "description": "We define the architecture, workflows, tools, and AI logic." },
+        { "index": "03", "title": "Deploy", "description": "We implement, test, and operate the system with your team." }
+      ]
+    },
+    "useCases": {
+      "kicker": "Industries we serve",
+      "title": "Built for companies that need real execution.",
+      "cards": [
+        { "tag": "Real estate", "title": "Lead capture, qualification, and automated follow-up for agencies and developers." },
+        { "tag": "Agencies & B2B", "title": "Lead generation, sales automation, and pipeline enrichment for growth teams." },
+        { "tag": "Operations", "title": "Support routing, backoffice automation, and internal tools for scaling teams." }
+      ],
+      "listTag": "Also for",
+      "list": ["Dealerships", "Clinics & healthcare", "E-commerce operations", "Support teams", "Marketing agencies", "SaaS sales teams"]
+    },
+    "pricing": {
+      "kicker": "Engagements",
+      "title": "Custom solutions, not one-size-fits-all.",
+      "period": "",
+      "cta": "Book strategy call",
+      "plans": [
+        {
+          "name": "Starter",
+          "price": "Audit + Roadmap",
+          "description": "AI audit of your processes and a proposal with quick wins and implementation plan.",
+          "features": ["Process analysis", "Automation roadmap", "Quick wins identified"]
+        },
+        {
+          "name": "Growth",
+          "price": "Lead gen or Sales",
+          "description": "Setup of lead generation or sales automation system, operated by our team.",
+          "features": ["Full system design", "Implementation", "Ongoing operation"]
+        },
+        {
+          "name": "Custom",
+          "price": "Full implementation",
+          "description": "Complete AI systems implementation for growth, sales, and operations.",
+          "features": ["End-to-end build", "Custom integrations", "Dedicated operation"]
+        }
+      ]
+    },
+    "final": {
+      "kicker": "Ready to automate",
+      "title": "AI systems and automation for companies that need real execution.",
+      "text": "From AI workflows to full products, built and operated by experts. Book a strategy call or request an audit.",
+      "primary": "Book strategy call",
+      "secondary": "Request audit"
+    },
+    "footer": {
+      "text": "AI systems and automation for companies that need real execution."
+    }
+  },
+  "es": {
+    "lang": "es",
+    "title": "NEXA Systems | Estudio de Automatización con IA",
+    "metaDescription": "NEXA es un estudio de sistemas con IA que diseña, automatiza y opera soluciones a medida para empresas modernas. Lead gen, automatización comercial y productos IA.",
+    "integrations": ["n8n", "HubSpot", "OpenAI", "Supabase", "Resend", "Cal.com"],
+    "nav": {
+      "solutions": "Soluciones",
+      "useCases": "Casos de uso",
+      "engagements": "Engagements",
+      "status": "Sistemas IA operando en vivo",
+      "statusShort": "Operando",
+      "bookCall": "Reservar llamada"
+    },
+    "hero": {
+      "eyebrow": "Estudio de Sistemas IA",
+      "title": "Diseñamos e implementamos sistemas con IA que resuelven problemas reales de negocio.",
+      "text": "Desde captación de leads y outreach hasta operaciones y herramientas internas, NEXA diseña e implementa sistemas con IA operados por expertos.",
+      "primaryCta": "Reservar llamada estratégica",
+      "secondaryCta": "Ver soluciones",
+      "scrollCue": "Sigue explorando",
+      "proof": [
+        { "value": "Lead gen", "label": "systems" },
+        { "value": "Sales & ops", "label": "automation" },
+        { "value": "Custom AI", "label": "products" }
+      ]
+    },
+    "heroExperience": {
+      "liveActivityLabel": "Actividad en vivo",
+      "leadEngineLabel": "Motor de leads",
+      "feedEvents": [
+        "+ Nuevo lead detectado",
+        "IA califico prospecto: 91%",
+        "Propuesta generada",
+        "Workflow completado",
+        "Agente respondio ticket"
+      ],
+      "liveFlow": ["Lead", "Score IA", "Automatizacion", "Resultado"],
+      "pipelineSteps": ["Lead detectado", "Intencion evaluada", "Handoff listo"],
+      "kpiStates": [
+        { "label": "Leads calificados", "score": 94, "trend": "+18% esta semana", "bars": [36, 48, 44, 74, 68, 92] },
+        { "label": "Probabilidad de respuesta", "score": 91, "trend": "Outreach optimizado", "bars": [32, 52, 58, 72, 78, 88] },
+        { "label": "Preparacion de reunion", "score": 97, "trend": "Handoff sincronizado", "bars": [44, 58, 66, 82, 76, 96] }
+      ],
+      "agentCards": [
+        { "label": "Agente de leads", "status": "activo" },
+        { "label": "Agente de soporte", "status": "activo" },
+        { "label": "Agente de operaciones", "status": "en ejecucion" }
+      ]
+    },
+    "logoStrip": "Stack conectado",
+    "platform": {
+      "kicker": "Qué construimos",
+      "title": "Sistemas con IA y automatización para empresas que necesitan ejecución real.",
+      "text": "Diseñamos, implementamos y operamos soluciones que automatizan crecimiento, ventas y operaciones. Sin plataforma genérica: sistemas a medida construidos por expertos.",
+      "pillars": [
+        {
+          "title": "AI Lead Engine",
+          "description": "Sistemas que encuentran, califican y priorizan prospectos automáticamente. De sourcing a scoring a handoff."
+        },
+        {
+          "title": "Automatización comercial IA",
+          "description": "Automatiza outreach, seguimiento, scoring y handoff comercial. Personalización a escala."
+        },
+        {
+          "title": "Operaciones internas IA",
+          "description": "Automatiza tareas internas, soporte, reportes, backoffice y procesos repetitivos."
+        },
+        {
+          "title": "Productos IA a medida",
+          "description": "Diseño y desarrollo de herramientas internas, dashboards, agentes o productos SaaS con IA."
+        }
+      ]
+    },
+    "story": {
+      "cards": [
+        {
+          "tag": "Orquestación en vivo",
+          "title": "De la señal al resultado en un único flujo operativo.",
+          "text": "Discovery, calificación, ejecución. Combinamos eventos, razonamiento IA y acciones multi-paso en sistemas que siguen funcionando.",
+          "nodes": ["Señal", "Decisión IA", "Enrutamiento", "Resultado"]
+        },
+        {
+          "tag": "Insights IA",
+          "title": "Entiende qué necesita tu negocio ahora mismo.",
+          "signals": [
+            "Prospecto de alto valor detectado",
+            "Cuello de botella en pipeline identificado",
+            "Oportunidad de automatización señalada"
+          ]
+        },
+        {
+          "tag": "Agentes",
+          "title": "Trabajadores IA especializados en ventas, operaciones y soporte.",
+          "agents": ["Agente de leads", "Agente de soporte", "Agente de operaciones"]
+        }
+      ]
+    },
+    "automation": {
+      "kicker": "Automatizacion de bugs",
+      "title": "Aparece un bug. El flujo lo clasifica, enruta, alerta y verifica automaticamente.",
+      "text": "Diseñamos automatizaciones de incidentes tipo n8n que convierten errores crudos en accion estructurada: parsean contexto, puntuan severidad, notifican al equipo correcto, crean tickets y dejan los fixes sensibles detras de aprobacion.",
+      "badges": ["Sentry", "Logs", "Slack", "Jira", "Aprobacion humana"],
+      "stage": {
+        "tag": "Orquestacion de errores tipo n8n",
+        "status": "Automatizacion activa",
+        "loopLabel": "Fase activa",
+        "lanes": ["Observar", "Enriquecer", "Decidir", "Resolver"],
+        "phaseNotes": [
+          "Los errores entran desde Sentry, logs, formularios y soporte.",
+          "El contexto se normaliza y la IA puntua impacto y causa probable.",
+          "El flujo abre ramas para alertas, tickets, sandbox de patch y aprobacion.",
+          "El incidente se cierra solo despues de verificar y sincronizar estado."
+        ],
+        "nodes": [
+          { "eyebrow": "Trigger", "title": "Ingesta de bug", "text": "Captura issues de Sentry, logs, formularios y reportes de soporte." },
+          { "eyebrow": "Parser", "title": "Constructor de contexto", "text": "Deduplica traces y adjunta release, usuario y endpoint." },
+          { "eyebrow": "IA", "title": "Triage IA", "text": "Resume causa probable, impacto y confianza antes del routing." },
+          { "eyebrow": "Router", "title": "Router de severidad", "text": "Decide si solo alerta, crea ticket + owner o dispara reparacion." },
+          { "eyebrow": "Notify", "title": "Escalacion en Slack", "text": "Envia resumen del incidente al canal correcto con acciones sugeridas." },
+          { "eyebrow": "Track", "title": "Ticket en Jira", "text": "Abre owner, prioridad, checklist y metadata de rollback." },
+          { "eyebrow": "Repair", "title": "Sandbox de patch", "text": "Prueba pasos seguros de remediacion fuera de produccion primero." },
+          { "eyebrow": "Gate", "title": "Aprobacion QA", "text": "Checkpoint humano antes de cualquier write sensible o deploy." },
+          { "eyebrow": "Resolve", "title": "Cierre verificado", "text": "Actualiza estado, guarda aprendizajes y cierra el loop." }
+        ],
+        "footer": ["Reintentos + backoff", "Branching segun severidad", "Aprobacion para fixes de alto riesgo"]
+      },
+      "feed": {
+        "tag": "Feed de incidentes",
+        "title": "El sistema explica que esta pasando mientras el workflow sigue corriendo.",
+        "items": [
+          { "label": "Critico", "title": "Pico detectado en Checkout API", "meta": "Issue de Sentry unido con logs del gateway", "time": "hace 06s" },
+          { "label": "Resumen IA", "title": "Causa probable aislada", "meta": "Confianza 0.82, rollback sugerido", "time": "hace 12s" },
+          { "label": "Escalado", "title": "Ticket + sala de Slack creados", "meta": "Owner asignado, QA gate activo", "time": "hace 19s" }
+        ]
+      },
+      "metrics": {
+        "tag": "Paquete de respuesta",
+        "title": "Cada branch escribe salida estructurada de vuelta en tu stack.",
+        "cards": [
+          { "value": "74%", "label": "autoclasificado", "note": "sin triage manual" },
+          { "value": "6m", "label": "primer response promedio", "note": "de la senal a la accion enrutada" },
+          { "value": "93%", "label": "ruido duplicado filtrado", "note": "antes de llegar a ingenieria" }
+        ]
+      },
+      "safeguards": {
+        "tag": "Capa de seguridad",
+        "title": "La automatizacion acelera. Las acciones riesgosas siguen controladas.",
+        "items": [
+          "Se genera rollback y resumen de impacto antes de aprobar.",
+          "Los incidentes de baja confianza pasan automaticamente a revision humana.",
+          "El fallback abre una war room si fallan las pruebas de reparacion."
+        ],
+        "rail": ["Detectar", "Enrutar", "Aprobar", "Verificar"]
+      }
+    },
+    "how": {
+      "kicker": "Cómo trabajamos",
+      "title": "Auditoría. Diseño. Despliegue.",
+      "steps": [
+        { "index": "01", "title": "Auditoría", "description": "Analizamos tus operaciones actuales e identificamos oportunidades de automatización." },
+        { "index": "02", "title": "Diseño", "description": "Definimos la arquitectura, workflows, herramientas y lógica de IA." },
+        { "index": "03", "title": "Despliegue", "description": "Implementamos, probamos y operamos el sistema con tu equipo." }
+      ]
+    },
+    "useCases": {
+      "kicker": "Industrias que servimos",
+      "title": "Construido para empresas que necesitan ejecución real.",
+      "cards": [
+        { "tag": "Inmobiliarias", "title": "Captación de leads, calificación y seguimiento automatizado para agencias y promotores." },
+        { "tag": "Agencias y B2B", "title": "Generación de leads, automatización comercial y enriquecimiento de pipeline para equipos de crecimiento." },
+        { "tag": "Operaciones", "title": "Enrutamiento de soporte, automatización de backoffice y herramientas internas para equipos en crecimiento." }
+      ],
+      "listTag": "También para",
+      "list": [
+        "Concesionarios",
+        "Clínicas y salud",
+        "Operaciones e-commerce",
+        "Equipos de soporte",
+        "Agencias de marketing",
+        "Equipos comerciales SaaS"
+      ]
+    },
+    "pricing": {
+      "kicker": "Engagements",
+      "title": "Soluciones a medida, no talla única.",
+      "period": "",
+      "cta": "Reservar llamada",
+      "plans": [
+        {
+          "name": "Starter",
+          "price": "Auditoría + Roadmap",
+          "description": "Auditoría IA de tus procesos y propuesta con quick wins y plan de implementación.",
+          "features": ["Análisis de procesos", "Roadmap de automatización", "Quick wins identificados"]
+        },
+        {
+          "name": "Growth",
+          "price": "Lead gen o Sales",
+          "description": "Configuración de sistema de lead gen o automatización comercial, operado por nuestro equipo.",
+          "features": ["Diseño completo", "Implementación", "Operación continua"]
+        },
+        {
+          "name": "Custom",
+          "price": "Implementación completa",
+          "description": "Implementación completa de sistemas IA para crecimiento, ventas y operaciones.",
+          "features": ["Build end-to-end", "Integraciones custom", "Operación dedicada"]
+        }
+      ]
+    },
+    "final": {
+      "kicker": "Listo para automatizar",
+      "title": "Sistemas con IA y automatización para empresas que necesitan ejecución real.",
+      "text": "De workflows IA a productos completos, construidos y operados por expertos. Reserva una llamada estratégica o solicita una auditoría.",
+      "primary": "Reservar llamada",
+      "secondary": "Solicitar auditoría"
+    },
+    "footer": {
+      "text": "Sistemas con IA y automatización para empresas que necesitan ejecución real."
+    }
+  }
+}

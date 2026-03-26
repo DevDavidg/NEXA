@@ -4,8 +4,9 @@ import { HeroExperience } from '../hero-experience';
 import { LandingEffects } from '../landing-effects';
 import { SectionExperience } from '../section-experience';
 import AutomationFlowSection from '../components/automation-flow-section.astro';
+import translationsData from '../content/translations.json';
 
-const translations = {
+const legacyTranslations = {
 	en: {
 		lang: 'en',
 		title: 'NEXA Systems | AI Automation Studio',
@@ -588,6 +589,8 @@ const translations = {
 	}
 } as const;
 
+const translations = translationsData;
+void legacyTranslations;
 const copy = translations.en;
 const translationsJson = JSON.stringify(translations);
 ---
@@ -611,6 +614,9 @@ const translationsJson = JSON.stringify(translations);
 					originalWarn(...args);
 				};
 			</script>
+		) : null}
+		{import.meta.env.DEV ? (
+			<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 		) : null}
 	</head>
 	<body>
@@ -711,7 +717,11 @@ const translationsJson = JSON.stringify(translations);
 						</div>
 					</div>
 
-					<HeroExperience integrations={copy.integrations} client:media="(min-width: 960px)" />
+					<HeroExperience
+						integrations={copy.integrations}
+						translations={{ en: translations.en.heroExperience, es: translations.es.heroExperience }}
+						client:media="(min-width: 960px)"
+					/>
 				</section>
 
 				<section class="logo-strip" data-reveal>
@@ -762,7 +772,7 @@ const translationsJson = JSON.stringify(translations);
 							<h3 data-i18n="story.cards.0.title">{copy.story.cards[0].title}</h3>
 							<p data-i18n="story.cards.0.text">{copy.story.cards[0].text}</p>
 							<div class="story-flow">
-								{copy.story.cards[0].nodes.map((node, index) => (
+								{(copy.story.cards[0]?.nodes ?? []).map((node, index) => (
 									<div class:list={['story-node', index === 1 && 'active', index === 3 && 'success']} data-i18n={`story.cards.0.nodes.${index}`}>
 										{node}
 									</div>
@@ -780,7 +790,7 @@ const translationsJson = JSON.stringify(translations);
 								<span></span>
 							</div>
 							<ul class="signal-list">
-								{copy.story.cards[1].signals.map((signal, index) => (
+								{(copy.story.cards[1]?.signals ?? []).map((signal, index) => (
 									<li data-i18n={`story.cards.1.signals.${index}`}>{signal}</li>
 								))}
 							</ul>
@@ -790,7 +800,7 @@ const translationsJson = JSON.stringify(translations);
 							<div class="card-tag" data-i18n="story.cards.2.tag">{copy.story.cards[2].tag}</div>
 							<h3 data-i18n="story.cards.2.title">{copy.story.cards[2].title}</h3>
 							<div class="agent-stack">
-								{copy.story.cards[2].agents.map((agent, index) => (
+								{(copy.story.cards[2]?.agents ?? []).map((agent, index) => (
 									<span data-i18n={`story.cards.2.agents.${index}`}>{agent}</span>
 								))}
 							</div>

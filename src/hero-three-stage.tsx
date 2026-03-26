@@ -3,6 +3,11 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { createRenderer } from './three-renderer';
 
+function getPointCount() {
+  if (globalThis.window === undefined) return 420;
+  return globalThis.innerWidth > 1440 ? 520 : 420;
+}
+
 function SignalField({ count }: { readonly count: number }) {
   const ref = useRef<THREE.Points>(null);
   const positions = useMemo(() => {
@@ -220,13 +225,7 @@ export function HeroThreeStage() {
   const rootRef = useRef<HTMLDivElement>(null);
   const [isActive, setIsActive] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-  const pointCount = useMemo(() => {
-    if (typeof window === 'undefined') {
-      return 420;
-    }
-
-    return window.innerWidth > 1440 ? 520 : 420;
-  }, []);
+  const [pointCount, setPointCount] = useState(getPointCount);
 
   useEffect(() => {
     const media = globalThis.matchMedia('(prefers-reduced-motion: reduce)');
@@ -239,6 +238,17 @@ export function HeroThreeStage() {
     media.addEventListener('change', handleChange);
 
     return () => media.removeEventListener('change', handleChange);
+  }, []);
+
+  useEffect(() => {
+    const onResize = () => {
+      setPointCount((prev) => {
+        const next = getPointCount();
+        return prev === next ? prev : next;
+      });
+    };
+    globalThis.addEventListener('resize', onResize, { passive: true });
+    return () => globalThis.removeEventListener('resize', onResize);
   }, []);
 
   useEffect(() => {

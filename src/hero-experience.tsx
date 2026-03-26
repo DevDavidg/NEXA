@@ -10,39 +10,64 @@ const LazyHeroThreeStage = lazy(() => import('./hero-three-stage').then((module)
 
 type HeroExperienceProps = {
   readonly integrations: readonly string[];
+  readonly translations: HeroExperienceTranslations;
 };
 
-const FEED_EVENTS = [
-  '+ New lead detected',
-  'AI scored prospect: 91%',
-  'Proposal generated',
-  'Workflow completed',
-  'Agent responded to ticket'
-];
+type HeroLocale = 'en' | 'es';
+type HeroExperienceCopy = {
+  readonly liveActivityLabel: string;
+  readonly leadEngineLabel: string;
+  readonly feedEvents: readonly string[];
+  readonly liveFlow: readonly string[];
+  readonly pipelineSteps: readonly string[];
+  readonly kpiStates: ReadonlyArray<{
+    readonly label: string;
+    readonly score: number;
+    readonly trend: string;
+    readonly bars: readonly number[];
+  }>;
+  readonly agentCards: ReadonlyArray<{ readonly label: string; readonly status: string }>;
+};
+type HeroExperienceTranslations = Readonly<Record<HeroLocale, HeroExperienceCopy>>;
 
-const LIVE_FLOW = ['Lead', 'AI score', 'Automation', 'Result'];
-const PIPELINE_STEPS = ['Lead detected', 'Intent scored', 'Handoff ready'] as const;
-const KPI_STATES = [
-  { label: 'Leads qualified', score: 94, trend: '+18% this week', bars: [36, 48, 44, 74, 68, 92] },
-  { label: 'Reply probability', score: 91, trend: 'Outreach optimized', bars: [32, 52, 58, 72, 78, 88] },
-  { label: 'Meeting readiness', score: 97, trend: 'Handoff synced', bars: [44, 58, 66, 82, 76, 96] }
-] as const;
-const AGENT_CARDS = [
-  { label: 'Lead Agent', status: 'live' },
-  { label: 'Support Agent', status: 'active' },
-  { label: 'Ops Agent', status: 'running' }
-] as const;
+function getHeroLocale(): HeroLocale {
+  if (typeof document === 'undefined') return 'en';
+  return document.documentElement.lang.toLowerCase().startsWith('es') ? 'es' : 'en';
+}
 
 function applyNextEntry(next: string, setEntries: Dispatch<SetStateAction<string[]>>) {
   setEntries((prev) => [next, ...prev.filter((item) => item !== next)].slice(0, 3));
 }
 
-function nextSceneIndex(current: number): number {
-  return (current + 1) % KPI_STATES.length;
+function createVisibilityInterval(onTick: () => void, delay: number) {
+  let id: number | null = null;
+  const start = () => {
+    if (id !== null) return;
+    id = globalThis.setInterval(onTick, delay);
+  };
+  const stop = () => {
+    if (id === null) return;
+    globalThis.clearInterval(id);
+    id = null;
+  };
+  const onVisibilityChange = () => {
+    if (document.hidden) stop();
+    else start();
+  };
+  start();
+  document.addEventListener('visibilitychange', onVisibilityChange);
+  return () => {
+    stop();
+    document.removeEventListener('visibilitychange', onVisibilityChange);
+  };
 }
 
-function advanceScene(setSceneIndex: Dispatch<SetStateAction<number>>) {
-  startTransition(() => setSceneIndex(nextSceneIndex));
+function nextSceneIndex(current: number, total: number): number {
+  return (current + 1) % total;
+}
+
+function advanceScene(setSceneIndex: Dispatch<SetStateAction<number>>, total: number) {
+  startTransition(() => setSceneIndex((current) => nextSceneIndex(current, total)));
 }
 
 function flowPillClass(index: number, activeStep: number): string {
@@ -55,21 +80,21 @@ function flowLineClass(index: number, activeStep: number): string {
   return index < activeStep ? 'is-live' : '';
 }
 
-function ActivityFeed() {
-  const [entries, setEntries] = useState(FEED_EVENTS.slice(0, 3));
+function ActivityFeed({ events, label }: { readonly events: readonly string[]; readonly label: string }) {
+  const [entries, setEntries] = useState(events.slice(0, 3));
   useEffect(() => {
+    setEntries(events.slice(0, 3));
     let cursor = 0;
     const tick = () => {
       cursor += 1;
-      applyNextEntry(FEED_EVENTS[cursor % FEED_EVENTS.length], setEntries);
+      applyNextEntry(events[cursor % events.length], setEntries);
     };
-    const id = globalThis.setInterval(tick, 2400);
-    return () => globalThis.clearInterval(id);
-  }, []);
+    return createVisibilityInterval(tick, 2400);
+  }, [events]);
 
   return (
     <div className="activity-feed glass-card" data-hero-panel>
-      <div className="panel-label">Live activity</div>
+      <div className="panel-label">{label}</div>
       <div className="activity-feed-list">
         {entries.map((entry) => (
           <div className="activity-feed-item" data-hero-feed-item key={entry}>
@@ -82,14 +107,24 @@ function ActivityFeed() {
   );
 }
 
-export function HeroExperience({ integrations }: HeroExperienceProps) {
+export function HeroExperience({ integrations, translations }: HeroExperienceProps) {
   const heroIntegrations = integrations.slice(0, 4);
   const [sceneIndex, setSceneIndex] = useState(0);
   const [showThreeStage, setShowThreeStage] = useState(false);
+  const [locale, setLocale] = useState<HeroLocale>(getHeroLocale);
+  const copy = translations[locale];
 
   useEffect(() => {
-    const id = globalThis.setInterval(() => advanceScene(setSceneIndex), 1800);
-    return () => globalThis.clearInterval(id);
+    return createVisibilityInterval(() => advanceScene(setSceneIndex, copy.kpiStates.length), 1800);
+  }, [copy.kpiStates.length]);
+
+  useEffect(() => {
+    const target = document.documentElement;
+    const observer = new MutationObserver(() => {
+      setLocale(getHeroLocale());
+    });
+    observer.observe(target, { attributes: true, attributeFilter: ['lang'] });
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -113,8 +148,8 @@ export function HeroExperience({ integrations }: HeroExperienceProps) {
     return () => globalThis.clearTimeout(id);
   }, []);
 
-  const activeStep = sceneIndex % PIPELINE_STEPS.length;
-  const currentKpi = KPI_STATES[sceneIndex];
+  const activeStep = sceneIndex % copy.pipelineSteps.length;
+  const currentKpi = copy.kpiStates[sceneIndex % copy.kpiStates.length];
 
   return (
     <div className="hero-visual hero-experience" data-hero-stage>
@@ -144,23 +179,23 @@ export function HeroExperience({ integrations }: HeroExperienceProps) {
       </div>
       <div className="hero-stage-overlay">
         <div className="hero-flow-map glass-card" data-hero-panel>
-          {LIVE_FLOW.map((node, index) => (
+          {copy.liveFlow.map((node, index) => (
             <div className="hero-flow-node" data-hero-flow-node key={node}>
               <span>{node}</span>
-              {index < LIVE_FLOW.length - 1 ? <div className="hero-flow-connector"></div> : null}
+              {index < copy.liveFlow.length - 1 ? <div className="hero-flow-connector"></div> : null}
             </div>
           ))}
         </div>
 
         <div className="hero-hud hero-hud-primary glass-card" data-hero-panel>
-          <div className="panel-label">Lead Engine</div>
+          <div className="panel-label">{copy.leadEngineLabel}</div>
           <div className="hero-hud-list">
-            {PIPELINE_STEPS.map((step, index) => (
+            {copy.pipelineSteps.map((step, index) => (
               <div className="hero-hud-sequence" key={step}>
                 <div className={`flow-pill ${flowPillClass(index, activeStep)}`} data-hero-hud-pill>
                   {step}
                 </div>
-                {index < PIPELINE_STEPS.length - 1 ? <div className={`flow-line ${flowLineClass(index, activeStep)}`}></div> : null}
+                {index < copy.pipelineSteps.length - 1 ? <div className={`flow-line ${flowLineClass(index, activeStep)}`}></div> : null}
               </div>
             ))}
           </div>
@@ -187,11 +222,15 @@ export function HeroExperience({ integrations }: HeroExperienceProps) {
           ))}
         </div>
 
-        <ActivityFeed />
+        <ActivityFeed events={copy.feedEvents} label={copy.liveActivityLabel} />
 
         <div className="agent-mini-stack" data-hero-panel>
-          {AGENT_CARDS.map((card, index) => (
-            <div className={`agent-mini-card glass-card ${sceneIndex % AGENT_CARDS.length === index ? 'is-emphasis' : ''}`} data-hero-agent-card key={card.label}>
+          {copy.agentCards.map((card, index) => (
+            <div
+              className={`agent-mini-card glass-card ${sceneIndex % copy.agentCards.length === index ? 'is-emphasis' : ''}`}
+              data-hero-agent-card
+              key={card.label}
+            >
               <span>{card.label}</span>
               <strong>{card.status}</strong>
             </div>
